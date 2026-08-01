@@ -170,6 +170,7 @@ export default function Offers({ setCurrentPage }) {
               </div>
               <button
                 onClick={() => openClaimModal('Alpha Portfolio Special (50% OFF)')}
+                aria-label="Grab Alpha Portfolio Special (50% OFF) Offer"
                 style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
                 className="w-full py-3.5 hover:bg-slate-800 text-xs font-bold rounded-xl transition cursor-pointer mt-4 shadow-sm border border-transparent"
               >
@@ -199,6 +200,7 @@ export default function Offers({ setCurrentPage }) {
               </div>
               <button
                 onClick={() => openClaimModal('Multibagger Combo (12 + 3 Free)')}
+                aria-label="Grab Multibagger Combo (12 + 3 Extra Free Months) Offer"
                 style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
                 className="w-full py-3.5 hover:bg-slate-800 text-xs font-bold rounded-xl transition cursor-pointer mt-4 shadow-sm border border-transparent"
               >
@@ -228,6 +230,7 @@ export default function Offers({ setCurrentPage }) {
               </div>
               <button
                 onClick={() => openClaimModal('Early Bird Bonus (Extra 10%)')}
+                aria-label="Apply Early Bird Bonus (Extra 10% Discount)"
                 style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
                 className="w-full py-3.5 hover:bg-slate-800 text-xs font-bold rounded-xl transition cursor-pointer mt-4 shadow-sm border border-transparent"
               >
@@ -266,6 +269,7 @@ export default function Offers({ setCurrentPage }) {
                 <span className="text-sm font-extrabold text-slate-900">Save 65%</span>
                 <button
                   onClick={() => openClaimModal('The Wealth Architect Bundle')}
+                  aria-label="Activate The Wealth Architect Bundle"
                   className="text-xs font-bold text-[#25a544] hover:text-[#208a38] transition cursor-pointer"
                 >
                   Activate
@@ -289,6 +293,7 @@ export default function Offers({ setCurrentPage }) {
                 <span className="text-sm font-extrabold text-slate-900">₹49,999</span>
                 <button
                   onClick={() => openClaimModal('Trader\'s Choice Bundle')}
+                  aria-label="View details of Trader's Choice Bundle"
                   className="text-xs font-bold text-[#25a544] hover:text-green-700 transition cursor-pointer"
                 >
                   Details
@@ -312,6 +317,7 @@ export default function Offers({ setCurrentPage }) {
                 <span className="text-sm font-extrabold text-slate-900">₹24,999</span>
                 <button
                   onClick={() => openClaimModal('Passive Growth Bundle')}
+                  aria-label="View details of Passive Growth Bundle"
                   className="text-xs font-bold text-[#25a544] hover:text-green-700 transition cursor-pointer"
                 >
                   Details
@@ -332,6 +338,7 @@ export default function Offers({ setCurrentPage }) {
               </div>
               <button
                 onClick={() => openClaimModal('Custom Corporate Plan')}
+                aria-label="Inquire about Custom Corporate Plan"
                 style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
                 className="hover:bg-slate-800 text-white font-extrabold px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider transition flex-shrink-0 cursor-pointer shadow-sm border border-transparent"
               >
@@ -366,6 +373,7 @@ export default function Offers({ setCurrentPage }) {
             </div>
             <button
               onClick={handleCopyReferral}
+              aria-label={copiedReferral ? 'Referral code copied' : 'Copy referral code EP-REF-2024-WIN to clipboard'}
               style={{ backgroundColor: '#dafd44', color: '#020617' }}
               className="hover:opacity-90 font-black px-6 py-3.5 rounded-xl text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer border border-transparent shadow-md"
             >
@@ -382,6 +390,7 @@ export default function Offers({ setCurrentPage }) {
           <div className="bg-white rounded-3xl p-8 max-w-md w-full relative border border-slate-100 shadow-2xl text-left animate-in fade-in zoom-in duration-200">
             <button 
               onClick={() => setIsModalOpen(false)}
+              aria-label="Close modal"
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-650 transition focus:outline-none cursor-pointer"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -421,11 +430,13 @@ export default function Offers({ setCurrentPage }) {
 
                 <div className="space-y-3.5">
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Capital Range</label>
+                    <label htmlFor="offersCapital" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Capital Range</label>
                     <select 
+                      id="offersCapital"
                       value={formData.capital} 
                       onChange={(e) => setFormData({...formData, capital: e.target.value})}
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs font-semibold text-slate-850 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="off"
                     >
                       <option value="Under 2 Lakhs">Under ₹2 Lakhs</option>
                       <option value="2-5 Lakhs">₹2 Lakhs - ₹5 Lakhs</option>
@@ -434,36 +445,42 @@ export default function Offers({ setCurrentPage }) {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Your Full Name</label>
+                    <label htmlFor="offersFullName" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Your Full Name</label>
                     <input 
+                      id="offersFullName"
                       type="text" 
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       placeholder="John Doe" 
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="name"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <label htmlFor="offersEmail" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
                     <input 
+                      id="offersEmail"
                       type="email" 
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       placeholder="name@email.com" 
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-800 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="email"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
+                    <label htmlFor="offersPhone" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
                     <input 
+                      id="offersPhone"
                       type="tel" 
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({...formData, phone: e.target.value})}
                       placeholder="+91 98765 43210" 
                       className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-xs text-slate-850 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="tel"
                     />
                   </div>
                 </div>

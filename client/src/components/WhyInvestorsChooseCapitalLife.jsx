@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function WhyInvestorsChooseCapitalLife() {
+export default function WhyInvestorsChooseCapitalLife({ setCurrentPage }) {
   const focusAreas = [
     { title: 'Clear Entry & Exit Levels', desc: 'Precise price zones designated for entering and exiting positions to lock in gains.' },
     { title: 'Defined Stop Loss', desc: 'Strict stop-loss levels provided to protect capital and control downside risk.' },
@@ -31,12 +31,13 @@ export default function WhyInvestorsChooseCapitalLife() {
               We believe every investment decision should be backed by research, discipline, and proper risk management. That's why our research process focuses on:
             </p>
             <div className="pt-2">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-bold text-white bg-gray-900 hover:bg-gray-800 transition"
+              <button
+                type="button"
+                onClick={() => setCurrentPage('contact')}
+                className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-bold text-white bg-gray-900 hover:bg-gray-800 transition cursor-pointer"
               >
                 Learn More
-              </a>
+              </button>
             </div>
           </div>
 
@@ -54,7 +55,7 @@ export default function WhyInvestorsChooseCapitalLife() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-1">{area.title}</h3>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1" aria-label={area.title}>{area.title}</h3>
                   <p className="text-[11px] text-gray-400 leading-relaxed">{area.desc}</p>
                 </div>
               </div>

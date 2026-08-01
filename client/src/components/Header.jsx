@@ -10,51 +10,52 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <div
+          <button
+            type="button"
             className="flex-shrink-0 flex items-center cursor-pointer select-none focus:outline-none"
             onClick={() => setCurrentPage('home')}
           >
             <img src={logo} alt="Capital Life Logo" className="h-11 w-auto object-contain" />
-          </div>
+          </button>
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex space-x-10">
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('home'); }}
-              className={`text-[15px] font-semibold transition focus:outline-none ${
+            <button
+              type="button"
+              onClick={() => setCurrentPage('home')}
+              className={`text-[15px] font-semibold transition focus:outline-none cursor-pointer ${
                 currentPage === 'home' ? 'text-[#25a544]' : 'text-gray-600 hover:text-[#25a544]'
               }`}
             >
               Home
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('pricing'); }}
-              className={`text-[15px] font-semibold transition focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentPage('pricing')}
+              className={`text-[15px] font-semibold transition focus:outline-none cursor-pointer ${
                 currentPage === 'pricing' ? 'text-[#25a544]' : 'text-gray-600 hover:text-[#25a544]'
               }`}
             >
               Plans & Pricing
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }}
-              className={`text-[15px] font-semibold transition focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentPage('contact')}
+              className={`text-[15px] font-semibold transition focus:outline-none cursor-pointer ${
                 currentPage === 'contact' ? 'text-[#25a544]' : 'text-gray-600 hover:text-[#25a544]'
               }`}
             >
               Contact Us
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('offers'); }}
-              className={`text-[15px] font-semibold transition focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => setCurrentPage('offers')}
+              className={`text-[15px] font-semibold transition focus:outline-none cursor-pointer ${
                 currentPage === 'offers' ? 'text-[#25a544]' : 'text-gray-600 hover:text-[#25a544]'
               }`}
             >
               Offers
-            </a>
+            </button>
           </nav>
 
 
@@ -62,24 +63,27 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
           <div className="hidden md:flex items-center space-x-6 relative">
             {!user ? (
               <>
-                <a 
-                  href="#" 
-                  onClick={(e) => { e.preventDefault(); setCurrentPage('login'); }}
-                  className="text-[15px] font-medium text-gray-600 hover:text-gray-900 transition focus:outline-none"
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage('login')}
+                  className="text-[15px] font-medium text-gray-600 hover:text-gray-900 transition focus:outline-none cursor-pointer"
                 >
                   Login
-                </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); setCurrentPage('login'); }}
-                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-[15px] font-semibold rounded-md text-white bg-gray-900 hover:bg-gray-805 transition duration-150 shadow-sm focus:outline-none"
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage('login')}
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-[15px] font-semibold rounded-md text-white bg-gray-900 hover:bg-gray-805 transition duration-150 shadow-sm focus:outline-none cursor-pointer"
                 >
                   GET STARTED
-                </a>
+                </button>
               </>
             ) : (
               <div className="relative">
                 <button
+                  type="button"
+                  aria-expanded={dropdownOpen}
+                  aria-label="User menu"
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center space-x-2.5 focus:outline-none cursor-pointer group"
                 >
@@ -89,7 +93,7 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
                   <span className="text-[14px] font-bold text-gray-700 group-hover:text-gray-900 transition">
                     {user.name || 'Investor'}
                   </span>
-                  <svg className={`h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg aria-hidden="true" className={`h-4 w-4 text-gray-400 group-hover:text-gray-600 transition-transform duration-200 ${dropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
@@ -115,10 +119,12 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
                     <button
                       onClick={() => {
                         setDropdownOpen(false);
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('token');
                         setUser(null);
                         setCurrentPage('home');
                       }}
-                      className="w-full text-left px-4 py-2 text-xs font-bold text-red-650 hover:bg-red-50 transition cursor-pointer"
+                      className="w-full text-left px-4 py-2 text-xs font-bold text-red-655 hover:bg-red-50 transition cursor-pointer"
                     >
                       Logout
                     </button>
@@ -153,61 +159,61 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
       {isOpen && (
         <div className="md:hidden bg-white border-b border-gray-200">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('home'); setIsOpen(false); }}
-              className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none ${
+            <button
+              type="button"
+              onClick={() => { setCurrentPage('home'); setIsOpen(false); }}
+              className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
                 currentPage === 'home' ? 'text-[#25a544] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#25a544]'
               }`}
             >
               Home
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('pricing'); setIsOpen(false); }}
-              className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => { setCurrentPage('pricing'); setIsOpen(false); }}
+              className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
                 currentPage === 'pricing' ? 'text-[#25a544] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#25a544]'
               }`}
             >
               Plans & Pricing
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); setIsOpen(false); }}
-              className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => { setCurrentPage('contact'); setIsOpen(false); }}
+              className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
                 currentPage === 'contact' ? 'text-[#25a544] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#25a544]'
               }`}
             >
               Contact Us
-            </a>
-            <a
-              href="#"
-              onClick={(e) => { e.preventDefault(); setCurrentPage('offers'); setIsOpen(false); }}
-              className={`block px-3 py-2 rounded-md text-base font-medium focus:outline-none ${
+            </button>
+            <button
+              type="button"
+              onClick={() => { setCurrentPage('offers'); setIsOpen(false); }}
+              className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
                 currentPage === 'offers' ? 'text-[#25a544] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#25a544]'
               }`}
             >
               Offers
-            </a>
+            </button>
           </div>
 
           <div className="pt-4 pb-4 border-t border-gray-200 px-5 flex flex-col space-y-3">
             {!user ? (
               <>
-                <a 
-                  href="#" 
-                  onClick={(e) => { e.preventDefault(); setCurrentPage('login'); setIsOpen(false); }}
-                  className="text-center font-medium text-gray-600 hover:text-gray-900 py-2 focus:outline-none"
+                <button
+                  type="button"
+                  onClick={() => { setCurrentPage('login'); setIsOpen(false); }}
+                  className="w-full text-center font-medium text-gray-600 hover:text-gray-900 py-2 focus:outline-none cursor-pointer"
                 >
                   Login
-                </a>
-                <a
-                  href="#"
-                  onClick={(e) => { e.preventDefault(); setCurrentPage('login'); setIsOpen(false); }}
-                  className="text-center font-semibold rounded-md text-white bg-gray-900 hover:bg-gray-805 py-3 shadow-sm focus:outline-none"
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setCurrentPage('login'); setIsOpen(false); }}
+                  className="w-full text-center font-semibold rounded-md text-white bg-gray-900 hover:bg-gray-805 py-3 shadow-sm focus:outline-none cursor-pointer"
                 >
                   GET STARTED
-                </a>
+                </button>
               </>
             ) : (
               <div className="space-y-3">
@@ -232,6 +238,8 @@ export default function Header({ currentPage, setCurrentPage, user, setUser }) {
                 <button
                   onClick={() => {
                     setIsOpen(false);
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('token');
                     setUser(null);
                     setCurrentPage('home');
                   }}

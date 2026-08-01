@@ -132,59 +132,63 @@ export default function Pricing({ setCurrentPage }) {
 
             {/* Pricing Selector options */}
             <div className="space-y-4">
-              <label
-                htmlFor="alpha-6m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   alphaPlan === '6m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="alpha-6m"
-                    type="radio"
-                    name="alphaOption"
-                    checked={alphaPlan === '6m'}
-                    onChange={() => setAlphaPlan('6m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="alpha-6m"
+                  type="radio"
+                  name="alphaOption"
+                  checked={alphaPlan === '6m'}
+                  onChange={() => setAlphaPlan('6m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="alpha-6m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">6 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹22,000</span>
-                  <span className="text-sm font-black text-gray-900">₹7,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹22,000</span>
+                    <span className="text-sm font-black text-gray-900">₹7,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <label
-                htmlFor="alpha-12m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   alphaPlan === '12m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="alpha-12m"
-                    type="radio"
-                    name="alphaOption"
-                    checked={alphaPlan === '12m'}
-                    onChange={() => setAlphaPlan('12m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="alpha-12m"
+                  type="radio"
+                  name="alphaOption"
+                  checked={alphaPlan === '12m'}
+                  onChange={() => setAlphaPlan('12m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="alpha-12m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">12 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
-                  <span className="text-sm font-black text-gray-900">₹13,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
+                    <span className="text-sm font-black text-gray-900">₹13,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); setCurrentPage('payment'); }}
-                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-b from-[#334155] to-[#0f172a] hover:from-[#1e293b] hover:to-[#020617] transition duration-150 mt-4 text-xs tracking-wider uppercase"
+              <button
+                type="button"
+                onClick={() => setCurrentPage('payment')}
+                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-b from-[#334155] to-[#0f172a] hover:from-[#1e293b] hover:to-[#020617] transition duration-150 mt-4 text-xs tracking-wider uppercase cursor-pointer"
               >
                 SUBSCRIBE NOW
-              </a>
+              </button>
             </div>
           </div>
 
@@ -235,59 +239,63 @@ export default function Pricing({ setCurrentPage }) {
 
             {/* Pricing Selector options */}
             <div className="space-y-4">
-              <label
-                htmlFor="ep-6m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   epPlan === '6m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="ep-6m"
-                    type="radio"
-                    name="epOption"
-                    checked={epPlan === '6m'}
-                    onChange={() => setEpPlan('6m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="ep-6m"
+                  type="radio"
+                  name="epOption"
+                  checked={epPlan === '6m'}
+                  onChange={() => setEpPlan('6m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="ep-6m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">6 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹22,000</span>
-                  <span className="text-sm font-black text-gray-900">₹7,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹22,000</span>
+                    <span className="text-sm font-black text-gray-900">₹7,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <label
-                htmlFor="ep-12m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   epPlan === '12m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="ep-12m"
-                    type="radio"
-                    name="epOption"
-                    checked={epPlan === '12m'}
-                    onChange={() => setEpPlan('12m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="ep-12m"
+                  type="radio"
+                  name="epOption"
+                  checked={epPlan === '12m'}
+                  onChange={() => setEpPlan('12m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="ep-12m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">12 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
-                  <span className="text-sm font-black text-gray-900">₹13,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
+                    <span className="text-sm font-black text-gray-900">₹13,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); setCurrentPage('payment'); }}
-                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-b from-[#334155] to-[#0f172a] hover:from-[#1e293b] hover:to-[#020617] transition duration-150 mt-4 text-xs tracking-wider uppercase"
+              <button
+                type="button"
+                onClick={() => setCurrentPage('payment')}
+                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-gradient-to-b from-[#334155] to-[#0f172a] hover:from-[#1e293b] hover:to-[#020617] transition duration-150 mt-4 text-xs tracking-wider uppercase cursor-pointer"
               >
                 SUBSCRIBE NOW
-              </a>
+              </button>
             </div>
           </div>
 
@@ -344,59 +352,63 @@ export default function Pricing({ setCurrentPage }) {
 
             {/* Pricing Selector options */}
             <div className="space-y-4">
-              <label
-                htmlFor="combo-12m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   comboPlan === '12m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="combo-12m"
-                    type="radio"
-                    name="comboOption"
-                    checked={comboPlan === '12m'}
-                    onChange={() => setComboPlan('12m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="combo-12m"
+                  type="radio"
+                  name="comboOption"
+                  checked={comboPlan === '12m'}
+                  onChange={() => setComboPlan('12m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="combo-12m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">12 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹84,000</span>
-                  <span className="text-sm font-black text-gray-900">₹21,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹84,000</span>
+                    <span className="text-sm font-black text-gray-900">₹21,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <label
-                htmlFor="combo-6m"
-                className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all duration-200 ${
+              <div
+                className={`flex items-center justify-between p-4 rounded-2xl border transition-all duration-200 ${
                   comboPlan === '6m' ? 'border-[#25a544] bg-[#25a544]/5' : 'border-gray-200 bg-white hover:bg-gray-50'
                 }`}
               >
-                <div className="flex items-center space-x-3">
-                  <input
-                    id="combo-6m"
-                    type="radio"
-                    name="comboOption"
-                    checked={comboPlan === '6m'}
-                    onChange={() => setComboPlan('6m')}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
-                  />
+                <input
+                  id="combo-6m"
+                  type="radio"
+                  name="comboOption"
+                  checked={comboPlan === '6m'}
+                  onChange={() => setComboPlan('6m')}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 flex-shrink-0 cursor-pointer"
+                />
+                <label
+                  htmlFor="combo-6m"
+                  className="flex-grow flex items-center justify-between ml-3 cursor-pointer select-none"
+                >
                   <span className="text-xs font-bold text-gray-800">6 Months</span>
-                </div>
-                <div className="text-right">
-                  <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
-                  <span className="text-sm font-black text-gray-900">₹11,987</span>
-                </div>
-              </label>
+                  <span className="text-right">
+                    <span className="text-[10px] text-gray-400 line-through block font-medium">₹44,000</span>
+                    <span className="text-sm font-black text-gray-900">₹11,987</span>
+                  </span>
+                </label>
+              </div>
 
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); setCurrentPage('payment'); }}
-                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-[#14532d] hover:bg-[#166534] transition duration-150 mt-4 text-xs tracking-wider uppercase"
+              <button
+                type="button"
+                onClick={() => setCurrentPage('payment')}
+                className="inline-flex items-center justify-center w-full px-6 py-4 rounded-2xl font-bold text-white bg-[#14532d] hover:bg-[#166534] transition duration-150 mt-4 text-xs tracking-wider uppercase cursor-pointer"
               >
                 SUBSCRIBE NOW
-              </a>
+              </button>
             </div>
           </div>
 
@@ -481,12 +493,13 @@ export default function Pricing({ setCurrentPage }) {
                   <span className="text-xs text-gray-400 line-through block">₹1,50,000</span>
                   <span className="text-3xl font-black text-[#dafd44]">₹49,999</span>
                 </div>
-                <a
-                  href="#"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-450 hover:to-green-550 shadow-[0_4px_25px_rgba(16,185,129,0.45)] hover:scale-103 transition duration-150 text-sm tracking-wider uppercase"
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage('payment')}
+                  className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-xl font-bold text-white bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-450 hover:to-green-550 shadow-[0_4px_25px_rgba(16,185,129,0.45)] hover:scale-103 transition duration-150 text-sm tracking-wider uppercase cursor-pointer"
                 >
                   Get Wealth X
-                </a>
+                </button>
               </div>
 
             </div>
@@ -619,8 +632,8 @@ export default function Pricing({ setCurrentPage }) {
                       </button>
                     </div>
 
-                    <p className="text-[10px] text-gray-400 text-center leading-relaxed">
-                      By submitting, you agree to our <a href="#" className="underline hover:text-gray-600">Terms & Conditions</a> and consent to receive calls/messages for advisory services.
+                     <p className="text-[10px] text-gray-400 text-center leading-relaxed">
+                      By submitting, you agree to our <button type="button" onClick={() => alert("Terms & Conditions will be available soon.")} className="underline hover:text-gray-600 cursor-pointer bg-transparent border-none p-0 inline text-[10px] text-gray-400 font-normal">Terms & Conditions</button> and consent to receive calls/messages for advisory services.
                     </p>
                   </form>
                 )}

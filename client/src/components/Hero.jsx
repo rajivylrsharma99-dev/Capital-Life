@@ -37,20 +37,21 @@ export default function Hero({ setCurrentPage, user }) {
 
             {/* CTAs */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); setCurrentPage(user ? 'dashboard' : 'login'); }}
-                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-sm font-bold rounded-xl text-white bg-gray-900 hover:bg-gray-800 shadow-md transition duration-150 text-center"
+              <button
+                type="button"
+                onClick={() => setCurrentPage(user ? 'dashboard' : 'login')}
+                aria-label={user ? 'Dashboard' : 'Get Started'}
+                className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-sm font-bold rounded-xl text-white bg-gray-900 hover:bg-gray-800 shadow-md transition duration-150 text-center cursor-pointer"
               >
                 {user ? 'Dashboard' : 'Get Started'}
-              </a>
-              <a
-                href="#"
-                onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }}
-                className="inline-flex items-center justify-center px-6 py-4 border border-gray-300 text-sm font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition duration-150 text-center"
+              </button>
+              <button
+                type="button"
+                onClick={() => setCurrentPage('contact')}
+                className="inline-flex items-center justify-center px-6 py-4 border border-gray-300 text-sm font-bold rounded-xl text-gray-700 bg-white hover:bg-gray-50 shadow-sm transition duration-150 text-center cursor-pointer"
               >
                 Talk to an Analyst
-              </a>
+              </button>
             </div>
 
           </div>

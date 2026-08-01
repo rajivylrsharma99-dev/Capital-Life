@@ -39,26 +39,69 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
   const [supportCallbackPhone, setSupportCallbackPhone] = useState('');
   const [supportCallbackSubmitted, setSupportCallbackSubmitted] = useState(false);
 
-  const handleSupportSubmit = (e) => {
+  const handleSupportSubmit = async (e) => {
     e.preventDefault();
     if (supportData.category && supportData.message) {
-      setSupportSubmitted(true);
-      setTimeout(() => {
-        setSupportSubmitted(false);
-        setSupportData({ category: '', message: '' });
-      }, 5000);
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://127.0.0.1:5000/api/support', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            category: supportData.category,
+            message: supportData.message,
+            type: 'support'
+          })
+        });
+        if (res.ok) {
+          setSupportSubmitted(true);
+          setSupportData({ category: '', message: '' });
+          fetchDashboardData();
+          setTimeout(() => {
+            setSupportSubmitted(false);
+          }, 5000);
+        } else {
+          alert('Failed to submit support request');
+        }
+      } catch (err) {
+        console.error('Support ticket submit error:', err);
+      }
     }
   };
 
-  const handleSupportCallbackSubmit = (e) => {
+  const handleSupportCallbackSubmit = async (e) => {
     e.preventDefault();
     if (supportCallbackPhone) {
-      setSupportCallbackSubmitted(true);
-      setTimeout(() => {
-        setShowSupportCallback(false);
-        setSupportCallbackSubmitted(false);
-        setSupportCallbackPhone('');
-      }, 3000);
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://127.0.0.1:5000/api/support', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            phone: supportCallbackPhone,
+            type: 'callback'
+          })
+        });
+        if (res.ok) {
+          setSupportCallbackSubmitted(true);
+          fetchDashboardData();
+          setTimeout(() => {
+            setShowSupportCallback(false);
+            setSupportCallbackSubmitted(false);
+            setSupportCallbackPhone('');
+          }, 3000);
+        } else {
+          alert('Failed to register callback request');
+        }
+      } catch (err) {
+        console.error('Callback error:', err);
+      }
     }
   };
 
@@ -69,6 +112,85 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
     dob: ''
   });
   const [kycSuccessMsg, setKycSuccessMsg] = useState('');
+
+  // Backend state lists
+  const [supportTicketsList, setSupportTicketsList] = useState([]);
+  const [transactionHistory, setTransactionHistory] = useState([]);
+  
+  // Payment Proof form states
+  const [paymentForm, setPaymentForm] = useState({
+    planName: 'Equity Research Pro',
+    price: 14999,
+    durationMonths: 1,
+    transactionRef: ''
+  });
+  const [paymentSuccessMsg, setPaymentSuccessMsg] = useState('');
+
+  const fetchDashboardData = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
+    try {
+      // 1. Fetch user status to get updated profile details
+      const userRes = await fetch('http://127.0.0.1:5000/api/user/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (userRes.ok) {
+        const userData = await userRes.json();
+        setUser(userData); // Update the user state globally
+        if (userData.kycDetails) {
+          setKycData({
+            pan: userData.kycDetails.pan || '',
+            mobile: userData.kycDetails.mobile || '',
+            dob: userData.kycDetails.dob || ''
+          });
+        }
+        if (userData.riskProfile) {
+          setRiskProfile(userData.riskProfile);
+          setShowResult(true);
+        }
+      }
+
+      // 2. Fetch uploaded files
+      const uploadRes = await fetch('http://127.0.0.1:5000/api/dashboard/uploads', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (uploadRes.ok) {
+        const uploadData = await uploadRes.json();
+        setUploadedFiles(uploadData.map(d => ({
+          id: d._id,
+          name: d.fileName,
+          type: d.documentType,
+          url: d.fileUrl,
+          size: 'Uploaded'
+        })));
+      }
+
+      // 3. Fetch support tickets
+      const supportRes = await fetch('http://127.0.0.1:5000/api/support/tickets', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (supportRes.ok) {
+        const supportDataList = await supportRes.json();
+        setSupportTicketsList(supportDataList);
+      }
+
+      // 4. Fetch subscription transactions
+      const txRes = await fetch('http://127.0.0.1:5000/api/subscriptions/history', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (txRes.ok) {
+        const txData = await txRes.json();
+        setTransactionHistory(txData);
+      }
+    } catch (err) {
+      console.error('Error fetching dashboard database data:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
 
   // Risk assessment states
   const [formData, setFormData] = useState({
@@ -179,15 +301,40 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
     return 'Conservative Capital';
   };
 
-  const handleRiskSubmit = (e) => {
+  const handleRiskSubmit = async (e) => {
     e.preventDefault();
     if (completedPercent === 100 && isDobValid) {
-      setRiskProfile(calculateRiskScore());
-      setShowResult(true);
+      const calculated = calculateRiskScore();
+      try {
+        const token = localStorage.getItem('token');
+        const res = await fetch('http://127.0.0.1:5000/api/dashboard/risk', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            answers: formData,
+            calculatedProfile: calculated
+          })
+        });
+        if (res.ok) {
+          setRiskProfile(calculated);
+          setShowResult(true);
+          fetchDashboardData();
+        } else {
+          alert('Failed to save risk assessment.');
+        }
+      } catch (err) {
+        console.error('Risk submit error:', err);
+        alert('An error occurred while saving.');
+      }
     }
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     setCurrentPage('home');
   };
@@ -213,28 +360,46 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
   const handleFileSelect = (e) => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
-    simulateUpload(files[0]);
+    uploadFile(files[0]);
   };
 
-  const simulateUpload = (file) => {
+  const uploadFile = async (file) => {
     setUploadingFileName(file.name);
     setIsUploading(true);
-    setUploadProgress(0);
+    setUploadProgress(10);
     
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setIsUploading(false);
-          setUploadedFiles((current) => [
-            ...current,
-            { name: file.name, size: (file.size / (1024 * 1024)).toFixed(2) + ' MB' }
-          ]);
-          return 100;
-        }
-        return prev + 10;
+    try {
+      const token = localStorage.getItem('token');
+      const formDataPayload = new FormData();
+      formDataPayload.append('file', file);
+      formDataPayload.append('documentType', 'other');
+      
+      setUploadProgress(40);
+      const res = await fetch('http://127.0.0.1:5000/api/dashboard/upload', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formDataPayload
       });
-    }, 120);
+      
+      setUploadProgress(80);
+      if (res.ok) {
+        setUploadProgress(100);
+        setTimeout(() => {
+          setIsUploading(false);
+          fetchDashboardData();
+        }, 300);
+      } else {
+        const errData = await res.json();
+        alert(errData.error || 'Failed to upload file');
+        setIsUploading(false);
+      }
+    } catch (err) {
+      console.error('File upload error:', err);
+      alert('Error uploading file');
+      setIsUploading(false);
+    }
   };
 
   const handleDragOver = (e) => {
@@ -245,11 +410,54 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
     e.preventDefault();
     const files = Array.from(e.dataTransfer.files);
     if (files.length === 0) return;
-    simulateUpload(files[0]);
+    uploadFile(files[0]);
   };
 
-  const handleFileDelete = (fileName) => {
-    setUploadedFiles((current) => current.filter((f) => f.name !== fileName));
+  const handleFileDelete = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`http://127.0.0.1:5000/api/dashboard/uploads/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (res.ok) {
+        fetchDashboardData();
+      } else {
+        alert('Failed to delete file');
+      }
+    } catch (err) {
+      console.error('File delete error:', err);
+    }
+  };
+
+  const handlePaymentSubmit = async (e) => {
+    e.preventDefault();
+    if (!paymentForm.transactionRef) return;
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://127.0.0.1:5000/api/subscriptions/purchase', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(paymentForm)
+      });
+      if (res.ok) {
+        setPaymentSuccessMsg('Payment submitted successfully! Verification in progress.');
+        setPaymentForm({ ...paymentForm, transactionRef: '' });
+        fetchDashboardData();
+        setTimeout(() => {
+          setPaymentSuccessMsg('');
+        }, 5000);
+      } else {
+        alert('Failed to submit transaction reference');
+      }
+    } catch (err) {
+      console.error('Payment submit error:', err);
+    }
   };
 
   return (
@@ -262,9 +470,14 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
       >
         <div className="space-y-8">
           {/* Logo */}
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={() => setCurrentPage('home')}>
+          <button
+            type="button"
+            className="flex items-center space-x-2 cursor-pointer bg-transparent border-0 p-0 text-left focus:outline-none focus:ring-2 focus:ring-[#dafd44] rounded-lg"
+            onClick={() => setCurrentPage('home')}
+            aria-label="Go to home"
+          >
             <img src={logo} alt="Capital Life Logo" className="h-10 w-auto object-contain bg-white p-1.5 rounded-lg" />
-          </div>
+          </button>
 
           <div className="h-px bg-slate-800"></div>
 
@@ -588,13 +801,15 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {/* Q1. Date of Birth */}
                       <div>
-                        <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Date of Birth</label>
+                        <label htmlFor="riskDob" className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Date of Birth</label>
                         <input 
+                          id="riskDob"
                           type="date"
                           required
                           value={formData.dob}
                           onChange={handleDobChange}
                           className={`w-full bg-white border ${!isDobValid ? 'border-red-450' : 'border-slate-300'} rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#25a544]`}
+                          autoComplete="bday"
                         />
                         {!isDobValid && (
                           <span className="block text-[9px] text-red-500 font-bold mt-1">
@@ -605,12 +820,14 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                       {/* Q2. Occupation */}
                       <div>
-                        <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Occupation</label>
+                        <label htmlFor="riskOccupation" className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Occupation</label>
                         <select
+                          id="riskOccupation"
                           required
                           value={formData.occupation}
                           onChange={(e) => setFormData({ ...formData, occupation: e.target.value })}
                           className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#25a544]"
+                          autoComplete="off"
                         >
                           <option value="">- Select -</option>
                           <option value="Salaried">Salaried</option>
@@ -624,12 +841,14 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                       {/* Q3. Investment Goals */}
                       <div>
-                        <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Investment Goals</label>
+                        <label htmlFor="riskGoals" className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Investment Goals</label>
                         <select
+                          id="riskGoals"
                           required
                           value={formData.goals}
                           onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
                           className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 focus:outline-none focus:border-[#25a544]"
+                          autoComplete="off"
                         >
                           <option value="">- Select -</option>
                           <option value="Capital Appreciation">Capital Appreciation</option>
@@ -641,21 +860,23 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                       {/* Q4. Monthly Income */}
                       <div>
-                        <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Monthly Income</label>
+                        <label htmlFor="riskIncome" className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Monthly Income</label>
                         <input 
+                          id="riskIncome"
                           type="number"
                           required
                           value={formData.income}
                           onChange={(e) => setFormData({ ...formData, income: e.target.value })}
                           placeholder="Enter Amount"
                           className="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                          autoComplete="off"
                         />
                       </div>
                     </div>
 
                     {/* Q5. Monthly Expense percentage */}
                     <div className="space-y-2">
-                      <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Monthly Expense (% of Income)</label>
+                      <span className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Monthly Expense (% of Income)</span>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {['0-20%', '20-50%', '50-80%', 'More than 80%'].map((opt) => (
                           <button
@@ -676,7 +897,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                     {/* Q6. Liquid Assets */}
                     <div className="space-y-2">
-                      <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Liquid Assets (Bank+Stocks+MF+Gold)</label>
+                      <span className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Liquid Assets (Bank+Stocks+MF+Gold)</span>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {['2 - 5 Lacs', '5 - 10 Lacs', '10 - 50 Lacs', 'More than 50 Lacs'].map((opt) => (
                           <button
@@ -697,7 +918,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                     {/* Q7. Direct Dependents */}
                     <div className="space-y-2">
-                      <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Number of direct dependents</label>
+                      <span className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Number of direct dependents</span>
                       <div className="grid grid-cols-4 gap-2">
                         {['0', '1 or 2', '3 or 4', '5 or above'].map((opt) => (
                           <button
@@ -718,9 +939,9 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                     {/* Q8. Scenario Question */}
                     <div className="space-y-3">
-                      <label className="block text-xs font-bold text-slate-800 leading-normal">
+                      <span className="block text-xs font-bold text-slate-800 leading-normal">
                         The Stock Market has fallen by 25% and your share value has dipped by 25% as well, but the market expects it to recover. What would you do?
-                      </label>
+                      </span>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {[
                           'Book Loss and Exit',
@@ -750,7 +971,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                     {/* Q9. Experience */}
                     <div className="space-y-2">
-                      <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Trading Experience</label>
+                      <span className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Trading Experience</span>
                       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                         {['Less than 1 Year', '1–3 Years', '3–5 Years', 'More than 5 Years'].map((opt) => (
                           <button
@@ -771,7 +992,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
 
                     {/* Q10. Awareness */}
                     <div className="space-y-3">
-                      <label className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Awareness about Finance</label>
+                      <span className="block text-[9px] font-extrabold text-slate-900 uppercase tracking-wider">Awareness about Finance</span>
                       <div className="grid grid-cols-1 gap-2">
                         {[
                           'I check business/finance news and updates daily',
@@ -924,19 +1145,38 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                   <p className="font-bold text-sm">{kycSuccessMsg}</p>
                 </div>
               ) : (
-                <form onSubmit={(e) => {
+                <form onSubmit={async (e) => {
                   e.preventDefault();
                   if (!kycData.pan || !kycData.mobile || !kycData.dob) {
                     alert('Please fill in all required fields');
                     return;
                   }
-                  setKycSuccessMsg('KYC submitted successfully! Our verification team will review your details.');
+                  try {
+                    const token = localStorage.getItem('token');
+                    const res = await fetch('http://127.0.0.1:5000/api/dashboard/kyc', {
+                      method: 'POST',
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                      },
+                      body: JSON.stringify(kycData)
+                    });
+                    if (res.ok) {
+                      setKycSuccessMsg('KYC submitted successfully! Our verification team will review your details.');
+                      fetchDashboardData();
+                    } else {
+                      alert('Failed to submit KYC details');
+                    }
+                  } catch (err) {
+                    console.error('KYC submit error:', err);
+                    alert('An error occurred. Please try again.');
+                  }
                 }} className="space-y-6 text-left max-w-md mx-auto">
                   
                   {/* PAN Input */}
                   <div className="space-y-2">
                     <div className="flex items-center space-x-1.5">
-                      <label className="block text-xs font-bold text-slate-600">PAN Card Number*</label>
+                      <label htmlFor="kycPan" className="block text-xs font-bold text-slate-600">PAN Card Number*</label>
                       <div className="relative group cursor-help">
                         <svg className="w-3.5 h-3.5 text-slate-400 hover:text-slate-650" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
@@ -947,36 +1187,42 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                       </div>
                     </div>
                     <input 
+                      id="kycPan"
                       type="text" 
                       placeholder="" 
                       required
                       value={kycData.pan}
                       onChange={(e) => setKycData({ ...kycData, pan: e.target.value.toUpperCase() })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#25a544] font-medium text-slate-800 transition"
+                      autoComplete="off"
                     />
                   </div>
 
                   {/* Mobile Input */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-600">Mobile *</label>
+                    <label htmlFor="kycMobile" className="block text-xs font-bold text-slate-600">Mobile *</label>
                     <input 
+                      id="kycMobile"
                       type="text" 
                       required
                       value={kycData.mobile}
                       onChange={(e) => setKycData({ ...kycData, mobile: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#25a544] font-medium text-slate-800 transition"
+                      autoComplete="tel"
                     />
                   </div>
 
                   {/* DOB Input */}
                   <div className="space-y-2">
-                    <label className="block text-xs font-bold text-slate-600">Date Of Birth (dd/mm/yyyy)*</label>
+                    <label htmlFor="kycDob" className="block text-xs font-bold text-slate-600">Date Of Birth (dd/mm/yyyy)*</label>
                     <input 
+                      id="kycDob"
                       type="date" 
                       required
                       value={kycData.dob}
                       onChange={(e) => setKycData({ ...kycData, dob: e.target.value })}
                       className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#25a544] font-medium text-slate-800 transition"
+                      autoComplete="bday"
                     />
                   </div>
 
@@ -1067,20 +1313,33 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                 <p className="text-[11px] font-bold text-slate-400 mt-1">Max 10 files. Max 2MB each.</p>
               </div>
 
+              <label htmlFor="file-upload" className="sr-only">
+                Upload files
+              </label>
+              <input 
+                type="file" 
+                id="file-upload" 
+                multiple 
+                className="hidden" 
+                onChange={handleFileSelect}
+                aria-label="Upload files"
+              />
               {/* Drag and Drop Area */}
               <div
+                role="button"
+                tabIndex={0}
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
+                onClick={() => document.getElementById('file-upload').click()}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    document.getElementById('file-upload').click();
+                  }
+                }}
                 style={{ borderRadius: '16px' }}
-                className="border-2 border-dashed border-slate-300 hover:border-[#25a544] bg-slate-50/50 py-10 flex flex-col items-center justify-center transition group relative cursor-pointer"
+                className="border-2 border-dashed border-slate-300 hover:border-[#25a544] bg-slate-50/50 py-10 flex flex-col items-center justify-center transition group relative cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#25a544] focus:ring-offset-2"
               >
-                <input 
-                  type="file" 
-                  id="file-upload" 
-                  multiple 
-                  className="hidden" 
-                  onChange={handleFileSelect}
-                />
                 
                 <div className="w-12 h-12 rounded-full bg-[#dafd44]/20 text-[#020617] flex items-center justify-center mb-4 border border-[#dafd44]/30 group-hover:scale-105 transition">
                   <svg className="w-5 h-5 text-emerald-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1091,13 +1350,12 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                 <p className="text-xs font-black text-slate-800">Drag and drop files here</p>
                 <p className="text-[10px] text-slate-400 mt-1 mb-4">or click to browse your computer</p>
 
-                <label
-                  htmlFor="file-upload"
+                <span
                   style={{ backgroundColor: '#dafd44', color: '#020617' }}
                   className="px-6 py-2.5 font-black text-[11px] uppercase tracking-wider rounded-xl shadow-sm transition hover:opacity-90 cursor-pointer select-none"
                 >
                   Choose files
-                </label>
+                </span>
               </div>
 
               <div className="flex items-center space-x-2 text-slate-450">
@@ -1172,9 +1430,10 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                           Success
                         </span>
                         <button
-                          onClick={() => handleFileDelete(file.name)}
+                          onClick={() => handleFileDelete(file.id || file.name)}
                           className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition cursor-pointer"
                           title="Delete File"
+                          aria-label="Delete File"
                         >
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1237,6 +1496,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     <button 
                       onClick={() => copyToClipboard(paymentDetails.bankName, 'bankName')}
                       className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                      aria-label="Copy Bank Name"
                     >
                       {copiedField === 'bankName' ? (
                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -1256,6 +1516,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     <button 
                       onClick={() => copyToClipboard(paymentDetails.accountName, 'accountName')}
                       className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                      aria-label="Copy Account Name"
                     >
                       {copiedField === 'accountName' ? (
                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -1275,6 +1536,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     <button 
                       onClick={() => copyToClipboard(paymentDetails.accountNumber, 'accountNumber')}
                       className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                      aria-label="Copy Account Number"
                     >
                       {copiedField === 'accountNumber' ? (
                         <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -1297,12 +1559,13 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                       <button 
                         onClick={() => copyToClipboard(paymentDetails.ifscCode, 'ifscCode')}
                         className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                        aria-label="Copy IFSC Code"
                       >
                         {copiedField === 'ifscCode' ? (
                           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
                         ) : null}
                         <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002-2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                         </svg>
                       </button>
                     </div>
@@ -1316,6 +1579,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                       <button 
                         onClick={() => copyToClipboard(paymentDetails.branch, 'branch')}
                         className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                        aria-label="Copy Branch"
                       >
                         {copiedField === 'branch' ? (
                           <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -1360,6 +1624,7 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     onClick={() => copyToClipboard(paymentDetails.upiId, 'upiId')}
                     style={{ backgroundColor: '#25a544', color: '#ffffff' }}
                     className="px-4 py-2 hover:opacity-90 font-black text-[10px] uppercase tracking-wider rounded-lg shadow-sm cursor-pointer select-none transition relative"
+                    aria-label={copiedField === 'upiId' ? 'UPI ID Copied' : 'Copy UPI ID'}
                   >
                     {copiedField === 'upiId' ? 'Copied!' : 'Copy'}
                   </button>
@@ -1410,6 +1675,59 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
               </div>
             </div>
 
+            {/* SUBMIT TRANSACTION PROOF */}
+            <div style={{ borderRadius: '24px', padding: '32px' }} className="bg-white border border-slate-200 shadow-sm space-y-4 text-left">
+              <div>
+                <h3 className="text-sm font-black text-slate-900">Submit Payment Transaction Reference</h3>
+                <p className="text-[11px] font-bold text-slate-450 mt-1">If you have made a transfer, notify our verification team by submitting your transaction ID below.</p>
+              </div>
+              {paymentSuccessMsg ? (
+                <div className="bg-emerald-50 border border-emerald-250 text-emerald-800 p-4 rounded-xl text-xs font-bold">
+                  {paymentSuccessMsg}
+                </div>
+              ) : (
+                <form onSubmit={handlePaymentSubmit} className="space-y-4 max-w-md">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1">
+                      <label htmlFor="planSelect" className="block text-[10px] font-bold text-slate-500 uppercase">Select Plan</label>
+                      <select 
+                        id="planSelect"
+                        value={paymentForm.planName} 
+                        onChange={(e) => {
+                          const plan = e.target.value;
+                          let price = 14999;
+                          let duration = 1;
+                          if (plan === 'Portfolio Advisory Starter') { price = 9999; duration = 3; }
+                          else if (plan === 'Wealth Creator Premium') { price = 29999; duration = 12; }
+                          setPaymentForm({ planName: plan, price, durationMonths: duration, transactionRef: paymentForm.transactionRef });
+                        }}
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold focus:outline-none bg-slate-50"
+                      >
+                        <option value="Equity Research Pro">Equity Research Pro (₹14,999 / 1m)</option>
+                        <option value="Portfolio Advisory Starter">Portfolio Advisory Starter (₹9,999 / 3m)</option>
+                        <option value="Wealth Creator Premium">Wealth Creator Premium (₹29,999 / 12m)</option>
+                      </select>
+                    </div>
+                    <div className="space-y-1">
+                      <label htmlFor="txnIdInput" className="block text-[10px] font-bold text-slate-500 uppercase">Transaction Reference ID</label>
+                      <input 
+                        type="text" 
+                        id="txnIdInput"
+                        required
+                        placeholder="e.g. TXN123456789" 
+                        value={paymentForm.transactionRef} 
+                        onChange={(e) => setPaymentForm({ ...paymentForm, transactionRef: e.target.value })}
+                        className="w-full px-3 py-2 rounded-lg border border-slate-200 text-xs font-semibold focus:outline-none bg-slate-50 font-mono"
+                      />
+                    </div>
+                  </div>
+                  <button type="submit" style={{ backgroundColor: '#e3ff54', color: '#000000' }} className="px-5 py-2.5 hover:opacity-90 font-black text-xs uppercase tracking-wider rounded-lg shadow-sm cursor-pointer select-none">
+                    Submit Reference
+                  </button>
+                </form>
+              )}
+            </div>
+
           </div>
         )}
 
@@ -1453,32 +1771,33 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100 text-xs font-semibold text-slate-700">
-                    <tr>
-                      <td className="py-4 font-mono font-bold text-slate-900">TXN2026072201</td>
-                      <td className="py-4">
-                        <div className="font-black text-slate-900">Equity Research Pro</div>
-                        <div className="text-[9px] text-slate-450 mt-0.5">1-Month Subscribed Plan</div>
-                      </td>
-                      <td className="py-4 font-mono font-black text-slate-900">₹14,999</td>
-                      <td className="py-4">UPI (rajivylrsharma89-3@oksbi)</td>
-                      <td className="py-4">22 Jul 2026, 11:30 AM</td>
-                      <td className="py-4 text-right">
-                        <span className="px-2 py-0.5 bg-amber-50 border border-amber-100 text-amber-800 text-[9px] font-black rounded-md">PENDING VERIFICATION</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="py-4 font-mono font-bold text-slate-900">TXN2026061503</td>
-                      <td className="py-4">
-                        <div className="font-black text-slate-900">Portfolio Advisory Starter</div>
-                        <div className="text-[9px] text-slate-450 mt-0.5">Quarterly Consultation</div>
-                      </td>
-                      <td className="py-4 font-mono font-black text-slate-900">₹9,999</td>
-                      <td className="py-4">Bank NEFT / Transfer</td>
-                      <td className="py-4">15 Jun 2026, 02:45 PM</td>
-                      <td className="py-4 text-right">
-                        <span className="px-2 py-0.5 bg-emerald-50 border border-emerald-100 text-emerald-800 text-[9px] font-black rounded-md">COMPLETED</span>
-                      </td>
-                    </tr>
+                    {transactionHistory.length === 0 ? (
+                      <tr>
+                        <td colSpan="6" className="py-4 text-center text-slate-400">No transaction records found in database.</td>
+                      </tr>
+                    ) : (
+                      transactionHistory.map((txn, index) => (
+                        <tr key={index}>
+                          <td className="py-4 font-mono font-bold text-slate-900">{txn.paymentDetails?.transactionRef || txn._id.substring(0, 12)}</td>
+                          <td className="py-4">
+                            <div className="font-black text-slate-900">{txn.planName}</div>
+                            <div className="text-[9px] text-slate-450 mt-0.5">{txn.durationMonths}-Month Subscribed Plan</div>
+                          </td>
+                          <td className="py-4 font-mono font-black text-slate-900">₹{txn.price.toLocaleString()}</td>
+                          <td className="py-4">NEFT / UPI</td>
+                          <td className="py-4">{new Date(txn.createdAt).toLocaleDateString()}</td>
+                          <td className="py-4 text-right">
+                            <span className={`px-2 py-0.5 border text-[9px] font-black rounded-md ${
+                              txn.status === 'active' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' :
+                              txn.status === 'rejected' ? 'bg-red-50 border-red-100 text-red-800' :
+                              'bg-amber-50 border-amber-100 text-amber-800'
+                            }`}>
+                              {txn.status === 'active' ? 'COMPLETED' : txn.status.replace('_', ' ').toUpperCase()}
+                            </span>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -1535,6 +1854,30 @@ export default function Dashboard({ setCurrentPage, user, setUser, initialTab = 
                   ) : (
                     <div className="space-y-6">
                       <h2 className="text-2xl font-black text-slate-900 tracking-tight">Request History</h2>
+                      {supportTicketsList.length === 0 ? (
+                        <p className="text-xs font-semibold text-slate-400">No support requests found.</p>
+                      ) : (
+                        <div className="space-y-4">
+                          {supportTicketsList.map((ticket, i) => (
+                            <div key={i} className="border border-slate-200 p-4 rounded-xl space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-xs font-bold text-slate-800">{ticket.subject || ticket.category || 'Callback Request'}</span>
+                                <span className={`text-[9px] px-2 py-0.5 rounded border font-black uppercase tracking-wider ${
+                                  ticket.status === 'resolved' ? 'bg-emerald-50 text-emerald-800 border-emerald-100' :
+                                  ticket.status === 'in_progress' ? 'bg-blue-50 text-blue-800 border-blue-105' :
+                                  'bg-amber-50 text-amber-800 border-amber-100'
+                                }`}>
+                                  {ticket.status}
+                                </span>
+                              </div>
+                              {ticket.message && <p className="text-xs text-slate-500 font-medium">{ticket.message}</p>}
+                              <span className="block text-[9px] text-slate-450 font-bold">
+                                Submitted on {new Date(ticket.createdAt).toLocaleDateString()}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 
 export default function Login({ setCurrentPage, user, setUser, initialSignUp = false }) {
@@ -13,6 +13,47 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
     agreeTerms: false
   });
   const [successMsg, setSuccessMsg] = useState('');
+  const [googleLoadError, setGoogleLoadError] = useState(false);
+
+  useEffect(() => {
+    if (window.google) {
+      return;
+    }
+
+    const scriptId = 'google-gsi-client';
+    let script = document.getElementById(scriptId);
+    
+    if (!script) {
+      script = document.createElement('script');
+      script.src = 'https://accounts.google.com/gsi/client';
+      script.id = scriptId;
+      script.async = true;
+      script.defer = true;
+      script.onerror = () => {
+        setGoogleLoadError(true);
+        console.error('Google Identity Services script failed to load.');
+      };
+      document.body.appendChild(script);
+    } else {
+      const interval = setInterval(() => {
+        if (window.google) {
+          clearInterval(interval);
+        }
+      }, 100);
+      
+      const timeout = setTimeout(() => {
+        clearInterval(interval);
+        if (!window.google) {
+          setGoogleLoadError(true);
+        }
+      }, 5000);
+
+      return () => {
+        clearInterval(interval);
+        clearTimeout(timeout);
+      };
+    }
+  }, []);
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
@@ -30,13 +71,73 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
   };
 
   const handleGoogleAuth = () => {
-    setSuccessMsg(isSignUp ? 'Signing up with Google...' : 'Logging in with Google...');
-    setUser({ name: 'Google Investor', email: 'google.user@gmail.com' });
-    setTimeout(() => {
+    if (!window.google) {
+      if (googleLoadError) {
+        alert("Google Sign-In is blocked or failed to load. Please disable your ad-blocker or Brave Shields for this site, check your internet connection, and refresh the page.");
+      } else {
+        alert("Google Identity Services script is still loading. Please try again in a few seconds.");
+      }
+      return;
+    }
+    
+    setSuccessMsg('Connecting to Google...');
+    
+    try {
+      const tokenClient = window.google.accounts.oauth2.initTokenClient({
+        client_id: '19426202653-roidhljh0m1995e8h1ip5onok3ubvuo8.apps.googleusercontent.com',
+        scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+        callback: async (tokenResponse) => {
+          if (tokenResponse.error) {
+            console.error('Google Auth Error:', tokenResponse.error);
+            setSuccessMsg('');
+            alert('Google authentication failed: ' + tokenResponse.error);
+            return;
+          }
+          
+          if (tokenResponse.access_token) {
+            setSuccessMsg(isSignUp ? 'Verifying account with backend...' : 'Verifying login with backend...');
+            try {
+              const res = await fetch('http://127.0.0.1:5000/api/auth/google', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ token: tokenResponse.access_token }),
+              });
+              
+              if (!res.ok) {
+                throw new Error('Failed to verify token with backend');
+              }
+              
+              const data = await res.json();
+              
+              // Set the user in the parent component and store session
+              localStorage.setItem('user', JSON.stringify(data.user));
+              localStorage.setItem('token', data.token);
+              setUser(data.user);
+              
+              setSuccessMsg(isSignUp ? 'Signed up with Google successfully!' : 'Logged in with Google successfully!');
+              setTimeout(() => {
+                setSuccessMsg('');
+                setCurrentPage('dashboard');
+              }, 1500);
+            } catch (err) {
+              console.error(err);
+              setSuccessMsg('');
+              alert('Error during backend verification: ' + err.message);
+            }
+          }
+        },
+      });
+      
+      tokenClient.requestAccessToken();
+    } catch (err) {
+      console.error('Google Sign-In initialization error:', err);
       setSuccessMsg('');
-      setCurrentPage('dashboard');
-    }, 2000);
+      alert('Could not initialize Google Sign-in: ' + err.message);
+    }
   };
+
 
   return (
     <div className="min-h-screen bg-white flex flex-col justify-center">
@@ -51,9 +152,14 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none"></div>
           
           {/* Top Logo */}
-          <div className="flex items-center space-x-2 relative z-10 cursor-pointer" onClick={() => setCurrentPage('home')}>
+          <button
+            type="button"
+            className="flex items-center space-x-2 relative z-10 cursor-pointer bg-transparent border-none p-0 focus:outline-none"
+            onClick={() => setCurrentPage('home')}
+            aria-label="Go to home page"
+          >
             <img src={logo} alt="Capital Life Logo" className="h-10 w-auto object-contain bg-white p-1.5 rounded-lg" />
-          </div>
+          </button>
 
           {/* Center Content based on View */}
           <div className="space-y-8 relative z-10 my-auto text-left">
@@ -146,12 +252,17 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
         <div className="lg:col-span-7 flex flex-col justify-center px-6 sm:px-16 lg:px-24 py-12 bg-white relative">
           
           {/* Back button for mobile */}
-          <div className="absolute top-6 left-6 lg:hidden flex items-center space-x-2 text-slate-700 cursor-pointer" onClick={() => setCurrentPage('home')}>
+          <button
+            type="button"
+            className="absolute top-6 left-6 lg:hidden flex items-center space-x-2 text-slate-700 cursor-pointer bg-transparent border-none p-0 focus:outline-none"
+            onClick={() => setCurrentPage('home')}
+            aria-label="Go back to home page"
+          >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             <span className="text-sm font-semibold">Home</span>
-          </div>
+          </button>
 
           <div className="max-w-md w-full mx-auto space-y-8 text-left">
             
@@ -192,15 +303,17 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   {/* Email Address */}
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-2">Email Address</label>
+                    <label htmlFor="loginEmail" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-2">Email Address</label>
                     <div className="relative">
                       <input 
+                        id="loginEmail"
                         type="email" 
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                         placeholder="name@company.com" 
                         className="w-full bg-white border border-slate-300 rounded-xl pl-4 pr-10 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                        autoComplete="email"
                       />
                       <span className="absolute inset-y-0 right-3 flex items-center text-slate-900 text-xs font-bold">@</span>
                     </div>
@@ -209,22 +322,31 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                   {/* Password */}
                   <div>
                     <div className="flex justify-between items-center mb-2">
-                      <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider">Password</label>
-                      <a href="#" className="text-[10px] font-black text-[#25a544] hover:underline">Forgot Password?</a>
+                      <label htmlFor="loginPassword" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider">Password</label>
+                      <button 
+                        type="button"
+                        onClick={() => alert("Password reset link will be sent to your email.")}
+                        className="text-[10px] font-black text-[#25a544] hover:underline cursor-pointer bg-transparent border-none p-0"
+                      >
+                        Forgot Password?
+                      </button>
                     </div>
                     <div className="relative">
                       <input 
+                        id="loginPassword"
                         type={showPassword ? 'text' : 'password'} 
                         required
                         value={formData.password}
                         onChange={(e) => setFormData({...formData, password: e.target.value})}
                         placeholder="••••••••" 
                         className="w-full bg-white border border-slate-300 rounded-xl pl-4 pr-10 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                        autoComplete="current-password"
                       />
                       <button 
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
                         className="absolute inset-y-0 right-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
                       >
                         {showPassword ? (
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -270,8 +392,9 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                 <div className="text-center text-xs pt-4 border-t border-slate-200">
                   <span className="text-slate-600 font-medium">Don't have an account? </span>
                   <button 
+                    type="button"
                     onClick={() => { setIsSignUp(true); setSuccessMsg(''); }}
-                    className="font-black text-[#25a544] hover:underline cursor-pointer"
+                    className="font-black text-[#25a544] hover:underline cursor-pointer bg-transparent border-none p-0 focus:outline-none"
                   >
                     Sign Up
                   </button>
@@ -308,58 +431,66 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                 <form onSubmit={handleFormSubmit} className="space-y-4">
                   {/* Full Name */}
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Full Name</label>
+                    <label htmlFor="signupFullName" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Full Name</label>
                     <input 
+                      id="signupFullName"
                       type="text" 
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({...formData, name: e.target.value})}
                       placeholder="John Doe" 
                       className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="name"
                     />
                   </div>
 
                   {/* Email Address */}
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <label htmlFor="signupEmail" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Email Address</label>
                     <input 
+                      id="signupEmail"
                       type="email" 
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({...formData, email: e.target.value})}
                       placeholder="john@example.com" 
                       className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="email"
                     />
                   </div>
 
                   {/* Mobile Number */}
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Mobile Number</label>
+                    <label htmlFor="signupPhone" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Mobile Number</label>
                     <div className="flex space-x-2">
                       <div className="w-20 bg-slate-50 border border-slate-300 rounded-xl flex items-center justify-center text-xs font-bold text-slate-700 select-none">
                         +91
                       </div>
                       <input 
+                        id="signupPhone"
                         type="tel" 
                         required
                         value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
                         placeholder="9876543210" 
                         className="flex-grow bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                        autoComplete="tel"
                       />
                     </div>
                   </div>
 
                   {/* Password */}
                   <div>
-                    <label className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Password</label>
+                    <label htmlFor="signupPassword" className="block text-[10px] font-extrabold text-slate-900 uppercase tracking-wider mb-1.5">Password</label>
                     <input 
+                      id="signupPassword"
                       type="password" 
                       required
                       value={formData.password}
                       onChange={(e) => setFormData({...formData, password: e.target.value})}
                       placeholder="Min. 8 characters" 
                       className="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#25a544]"
+                      autoComplete="new-password"
                     />
                   </div>
 
@@ -374,7 +505,7 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                       className="h-4 w-4 mt-0.5 rounded border-slate-300 text-[#25a544] focus:ring-[#25a544]"
                     />
                     <label htmlFor="agreeTerms" className="text-[11px] font-bold text-slate-600 leading-normal select-none">
-                      I agree to the <a href="#" className="text-[#25a544] hover:underline">Terms of Service</a> and <a href="#" className="text-[#25a544] hover:underline">Privacy Policy</a>.
+                      I agree to the <button type="button" onClick={() => alert("Terms of Service will be available soon.")} className="text-[#25a544] hover:underline cursor-pointer bg-transparent border-none p-0">Terms of Service</button> and <button type="button" onClick={() => alert("Privacy Policy will be available soon.")} className="text-[#25a544] hover:underline cursor-pointer bg-transparent border-none p-0">Privacy Policy</button>.
                     </label>
                   </div>
 
@@ -391,8 +522,9 @@ export default function Login({ setCurrentPage, user, setUser, initialSignUp = f
                 <div className="text-center text-xs pt-4 border-t border-slate-200">
                   <span className="text-slate-600 font-medium">Already have an account? </span>
                   <button 
+                    type="button"
                     onClick={() => { setIsSignUp(false); setSuccessMsg(''); }}
-                    className="font-black text-[#25a544] hover:underline cursor-pointer"
+                    className="font-black text-[#25a544] hover:underline cursor-pointer bg-transparent border-none p-0 focus:outline-none"
                   >
                     Login
                   </button>

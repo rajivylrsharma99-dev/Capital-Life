@@ -53,11 +53,13 @@ export default function FAQ() {
                 {/* Accordion Trigger Button */}
                 <button
                   onClick={() => toggleFAQ(index)}
+                  aria-label={faq.question}
+                  aria-expanded={isOpen}
                   className="w-full px-6 py-5 flex items-center justify-between text-left font-bold text-gray-800 hover:bg-gray-50 transition focus:outline-none"
                 >
                   <span className="text-sm sm:text-base">{faq.question}</span>
                   <span className={`ml-4 text-gray-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#25a544]' : 'rotate-0'}`}>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </span>

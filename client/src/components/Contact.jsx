@@ -11,10 +11,40 @@ export default function Contact() {
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.name && formData.email && formData.phone && formData.message) {
-      setSubmitted(true);
+      try {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Content-Type': 'application/json'
+        };
+        if (token) {
+          headers['Authorization'] = `Bearer ${token}`;
+        }
+        
+        const res = await fetch('http://127.0.0.1:5000/api/support', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            subject: formData.subject,
+            message: formData.message,
+            type: 'inquiry'
+          })
+        });
+
+        if (res.ok) {
+          setSubmitted(true);
+        } else {
+          alert('Failed to submit inquiry. Please try again.');
+        }
+      } catch (err) {
+        console.error('Error submitting form:', err);
+        alert('An error occurred. Please try again.');
+      }
     }
   };
 
@@ -58,48 +88,56 @@ export default function Contact() {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Full Name</label>
+                      <label htmlFor="contactFullName" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Full Name</label>
                       <input
+                        id="contactFullName"
                         type="text"
                         required
                         placeholder="John Doe"
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl border border-gray-250 focus:border-[#25a544] focus:ring-1 focus:ring-green-500 focus:outline-none text-sm transition font-medium text-gray-800"
+                        autoComplete="name"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Email Address</label>
+                      <label htmlFor="contactEmailAddress" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Email Address</label>
                       <input
+                        id="contactEmailAddress"
                         type="email"
                         required
                         placeholder="john@example.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl border border-gray-250 focus:border-[#25a544] focus:ring-1 focus:ring-green-500 focus:outline-none text-sm transition font-medium text-gray-800"
+                        autoComplete="email"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Mobile Number</label>
+                      <label htmlFor="contactMobileNumber" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Mobile Number</label>
                       <input
+                        id="contactMobileNumber"
                         type="tel"
                         required
                         placeholder="+91 00000 00000"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl border border-gray-250 focus:border-[#25a544] focus:ring-1 focus:ring-green-500 focus:outline-none text-sm transition font-medium text-gray-800"
+                        autoComplete="tel"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Subject</label>
+                      <label htmlFor="contactSubject" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Subject</label>
                       <div className="relative">
                         <select
+                          id="contactSubject"
                           value={formData.subject}
                           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                           className="w-full px-4 py-3.5 rounded-xl border border-gray-250 focus:border-[#25a544] focus:ring-1 focus:ring-green-500 focus:outline-none text-sm transition font-medium text-gray-800 appearance-none bg-white"
+                          autoComplete="off"
                         >
                           <option value="General Inquiry">General Inquiry</option>
                           <option value="Advisory Queries">Advisory Queries</option>
@@ -116,14 +154,16 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Message</label>
+                    <label htmlFor="contactMessage" className="block text-xs font-bold text-gray-400 mb-2 uppercase tracking-wide">Message</label>
                     <textarea
+                      id="contactMessage"
                       required
                       rows={4}
                       placeholder="How can we help you today?"
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       className="w-full px-4 py-3.5 rounded-xl border border-gray-250 focus:border-[#25a544] focus:ring-1 focus:ring-green-500 focus:outline-none text-sm transition font-medium text-gray-800"
+                      autoComplete="off"
                     />
                   </div>
 

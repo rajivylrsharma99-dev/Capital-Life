@@ -63,9 +63,11 @@ export default function Awards() {
               <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
                 {award.category}
               </span>
-              <h3 className="text-xl font-bold text-gray-800 mb-6">
-                {award.title}
-              </h3>
+              {award.title && (
+                <h3 className="text-xl font-bold text-gray-800 mb-6" aria-label={award.title}>
+                  {award.title}
+                </h3>
+              )}
               
               {/* Award Visual Wrapper */}
               <div className="w-32 h-32 bg-gray-50 rounded-full flex items-center justify-center mb-6 border border-gray-100">

@@ -65,6 +65,7 @@ export default function Payment({ setCurrentPage }) {
                 <button 
                   onClick={() => copyToClipboard(details.bankName, 'bankName')}
                   className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                  aria-label={copiedField === 'bankName' ? 'Bank Name Copied' : 'Copy Bank Name'}
                 >
                   {copiedField === 'bankName' ? (
                     <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -84,6 +85,7 @@ export default function Payment({ setCurrentPage }) {
                 <button 
                   onClick={() => copyToClipboard(details.accountName, 'accountName')}
                   className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                  aria-label={copiedField === 'accountName' ? 'Account Name Copied' : 'Copy Account Name'}
                 >
                   {copiedField === 'accountName' ? (
                     <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -103,6 +105,7 @@ export default function Payment({ setCurrentPage }) {
                 <button 
                   onClick={() => copyToClipboard(details.accountNumber, 'accountNumber')}
                   className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                  aria-label={copiedField === 'accountNumber' ? 'Account Number Copied' : 'Copy Account Number'}
                 >
                   {copiedField === 'accountNumber' ? (
                     <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -125,6 +128,7 @@ export default function Payment({ setCurrentPage }) {
                   <button 
                     onClick={() => copyToClipboard(details.ifscCode, 'ifscCode')}
                     className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                    aria-label={copiedField === 'ifscCode' ? 'IFSC Code Copied' : 'Copy IFSC Code'}
                   >
                     {copiedField === 'ifscCode' ? (
                       <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -144,6 +148,7 @@ export default function Payment({ setCurrentPage }) {
                   <button 
                     onClick={() => copyToClipboard(details.branch, 'branch')}
                     className="p-2 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-700 transition relative"
+                    aria-label={copiedField === 'branch' ? 'Branch Copied' : 'Copy Branch'}
                   >
                     {copiedField === 'branch' ? (
                       <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[9px] px-2 py-1 rounded font-bold uppercase tracking-wider shadow">Copied!</span>
@@ -188,6 +193,7 @@ export default function Payment({ setCurrentPage }) {
                 onClick={() => copyToClipboard(details.upiId, 'upiId')}
                 style={{ backgroundColor: '#25a544', color: '#ffffff' }}
                 className="px-4 py-2 hover:opacity-90 font-black text-[10px] uppercase tracking-wider rounded-lg shadow-sm cursor-pointer select-none transition relative"
+                aria-label={copiedField === 'upiId' ? 'UPI ID Copied' : 'Copy UPI ID'}
               >
                 {copiedField === 'upiId' ? 'Copied!' : 'Copy'}
               </button>

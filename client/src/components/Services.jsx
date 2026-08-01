@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Services() {
+export default function Services({ setCurrentPage }) {
   const servicesList = [
     {
       title: 'Equity Research',
@@ -82,7 +82,7 @@ export default function Services() {
                 <div className="w-12 h-12 rounded-xl bg-[#dafd44] flex items-center justify-center mb-6">
                   {service.icon}
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">
+                <h3 className="text-xl font-bold text-gray-900 mb-3" aria-label={service.title}>
                   {service.title}
                 </h3>
                 <p className="text-sm text-gray-500 leading-relaxed">
@@ -91,15 +91,16 @@ export default function Services() {
               </div>
               
               <div className="mt-6 pt-4 border-t border-gray-50">
-                <a
-                  href="#"
-                  className="inline-flex items-center text-xs font-bold text-[#25a544] hover:text-green-700 transition"
+                <button
+                  type="button"
+                  onClick={() => setCurrentPage('pricing')}
+                  className="inline-flex items-center text-xs font-bold text-[#25a544] hover:text-green-700 transition cursor-pointer"
                 >
                   <span>Explore Service</span>
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
-                </a>
+                </button>
               </div>
             </div>
           ))}

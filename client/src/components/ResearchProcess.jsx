@@ -61,9 +61,11 @@ export default function ResearchProcess() {
                 </div>
 
                 {/* Step Content */}
-                <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight">
-                  {step.title}
-                </h3>
+                {step.title && (
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 leading-tight" aria-label={step.title}>
+                    {step.title}
+                  </h3>
+                )}
                 <p className="text-xs text-gray-500 leading-relaxed max-w-xs lg:max-w-none">
                   {step.text}
                 </p>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Partners from './components/Partners';
@@ -20,9 +20,24 @@ import Dashboard from './components/Dashboard';
 import Payment from './components/Payment';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState('home');
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? JSON.parse(stored) : null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [currentPage, setCurrentPage] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? 'dashboard' : 'home';
+    } catch (e) {
+      return 'home';
+    }
+  });
   const [dashboardTab, setDashboardTab] = useState('risk');
+
 
   const showHeaderFooter = currentPage !== 'login' && currentPage !== 'signup' && currentPage !== 'dashboard';
 
@@ -41,9 +56,9 @@ function App() {
             <Awards />
             <Stats />
             <WhyChooseUs />
-            <Services />
+            <Services setCurrentPage={setCurrentPage} />
             <ResearchProcess />
-            <WhyInvestorsChooseCapitalLife />
+            <WhyInvestorsChooseCapitalLife setCurrentPage={setCurrentPage} />
             <Testimonials />
             <FAQ />
             <CTA setCurrentPage={setCurrentPage} user={user} />

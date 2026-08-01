@@ -24,20 +24,21 @@ export default function CTA({ setCurrentPage, user }) {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); setCurrentPage(user ? 'dashboard' : 'login'); }}
-            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent rounded-xl text-base font-bold text-gray-900 bg-[#dafd44] hover:bg-[#cee551] shadow-lg transform hover:-translate-y-0.5 transition duration-150"
+          <button
+            type="button"
+            aria-label={user ? 'Dashboard' : 'Get Started'}
+            onClick={() => setCurrentPage(user ? 'dashboard' : 'login')}
+            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent rounded-xl text-base font-bold text-gray-900 bg-[#dafd44] hover:bg-[#cee551] shadow-lg transform hover:-translate-y-0.5 transition duration-150 cursor-pointer"
           >
             {user ? 'Dashboard' : 'Get Started'}
-          </a>
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); setCurrentPage('contact'); }}
-            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-gray-600 rounded-xl text-base font-bold text-white hover:bg-gray-800 transition duration-150"
+          </button>
+          <button
+            type="button"
+            onClick={() => setCurrentPage('contact')}
+            className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-gray-600 rounded-xl text-base font-bold text-white hover:bg-gray-800 transition duration-150 cursor-pointer"
           >
             Contact Our Team
-          </a>
+          </button>
         </div>
 
       </div>
