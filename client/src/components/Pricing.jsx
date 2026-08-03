@@ -423,7 +423,7 @@ export default function Pricing() {
             
             {/* Left Content */}
             <div className="lg:col-span-7 space-y-6">
-              <span className="inline-flex items-center px-3 py-1 bg-green-950/45 border border-green-800/60 text-xs font-bold rounded-lg text-[#15803d] tracking-wider uppercase">
+              <span className="inline-flex items-center px-3 py-1 bg-green-950/45 border border-green-800/60 text-xs font-bold rounded-lg text-[#4ade80] tracking-wider uppercase">
                 👑 PREMIUM TIER
               </span>
               
@@ -431,7 +431,7 @@ export default function Pricing() {
                 WEALTH X
               </h3>
               
-              <p className="text-sm sm:text-base text-gray-600 leading-relaxed max-w-xl">
+              <p className="text-sm sm:text-base text-gray-300 leading-relaxed max-w-xl">
                 The comprehensive flagship service designed for high-net-worth investors. Wealth X bridges the gap between short-term tactical opportunities and long-term strategic compounding.
               </p>
 
@@ -445,7 +445,7 @@ export default function Pricing() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold mb-0.5 text-white">Curated Portfolio</h4>
-                    <span className="text-[10px] text-gray-600">Long-term wealth creation</span>
+                    <span className="text-[10px] text-gray-400">Long-term wealth creation</span>
                   </div>
                 </div>
 
@@ -457,7 +457,7 @@ export default function Pricing() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold mb-0.5 text-white">Monthly Ideas</h4>
-                    <span className="text-[10px] text-gray-600">Sectoral & tactical research</span>
+                    <span className="text-[10px] text-gray-400">Sectoral & tactical research</span>
                   </div>
                 </div>
 
@@ -469,7 +469,7 @@ export default function Pricing() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold mb-0.5 text-white">ETF Strategy</h4>
-                    <span className="text-[10px] text-gray-600">Thematic & macro focus</span>
+                    <span className="text-[10px] text-gray-400">Thematic & macro focus</span>
                   </div>
                 </div>
 
@@ -481,7 +481,7 @@ export default function Pricing() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold mb-0.5 text-white">Opportunity Driven</h4>
-                    <span className="text-[10px] text-gray-600">Adaptive cycle strategies</span>
+                    <span className="text-[10px] text-gray-400">Adaptive cycle strategies</span>
                   </div>
                 </div>
               </div>
@@ -489,8 +489,8 @@ export default function Pricing() {
               {/* Price Box */}
               <div className="bg-[#14161f] border border-white/5 rounded-[20px] p-6 flex flex-col sm:flex-row justify-between items-center max-w-xl mt-8">
                 <div className="mb-4 sm:mb-0 text-center sm:text-left">
-                  <span className="text-[9px] font-bold text-gray-600 uppercase tracking-widest block">ANNUAL SUBSCRIPTION</span>
-                  <span className="text-xs text-gray-600 line-through block">₹1,50,000</span>
+                  <span className="text-[9px] font-bold text-gray-400 uppercase tracking-widest block">ANNUAL SUBSCRIPTION</span>
+                  <span className="text-xs text-gray-400 line-through block">₹1,50,000</span>
                   <span className="text-3xl font-black text-[#dafd44]">₹49,999</span>
                 </div>
                 <button

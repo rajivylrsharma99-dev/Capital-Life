@@ -7,7 +7,6 @@ export default function Offers({ setCurrentPage }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', capital: '2-5 Lakhs' });
   const [submitted, setSubmitted] = useState(false);
-  const [copiedCode, setCopiedCode] = useState(false);
   const [copiedReferral, setCopiedReferral] = useState(false);
 
   useEffect(() => {
@@ -36,12 +35,6 @@ export default function Offers({ setCurrentPage }) {
     return `${hrs.toString().padStart(2, '0')}h : ${mins.toString().padStart(2, '0')}m : ${secs.toString().padStart(2, '0')}s`;
   };
 
-  const handleCopyCode = (code, e) => {
-    e.stopPropagation();
-    navigator.clipboard.writeText(code);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
-  };
 
   const handleCopyReferral = () => {
     navigator.clipboard.writeText('EP-REF-2024-WIN');
@@ -110,7 +103,7 @@ export default function Offers({ setCurrentPage }) {
           </h1>
           
           {/* Subheading */}
-          <p className="text-xs sm:text-sm text-slate-350 leading-relaxed max-w-xl relative z-10 font-medium">
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-xl relative z-10 font-medium">
             Unlock premium market research strategies and portfolio models. Take advantage of our verified limited-time anniversary rates.
           </p>
           
@@ -163,14 +156,14 @@ export default function Offers({ setCurrentPage }) {
             {/* Card 1: Alpha Portfolio Special */}
             <div 
               style={{ padding: '40px 32px', minHeight: '400px', borderRadius: '24px' }}
-              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-350 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
+              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-300 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
                 <div className="flex justify-between items-center mb-5">
                   <span className="text-[9px] font-extrabold bg-emerald-50 text-emerald-700 border border-emerald-100 px-3 py-1 rounded-md uppercase tracking-wider">
                     Most Popular
                   </span>
-                  <span className="text-[11px] font-bold text-slate-300 font-mono">#F01</span>
+                  <span className="text-[11px] font-bold text-slate-500 font-mono">#F01</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Alpha Portfolio Special</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
@@ -193,14 +186,14 @@ export default function Offers({ setCurrentPage }) {
             {/* Card 2: Multibagger Combo */}
             <div 
               style={{ padding: '40px 32px', minHeight: '400px', borderRadius: '24px' }}
-              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-350 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
+              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-300 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
                 <div className="flex justify-between items-center mb-5">
                   <span className="text-[9px] font-extrabold bg-[#dafd44]/15 border border-[#dafd44]/30 text-emerald-800 px-3 py-1 rounded-md uppercase tracking-wider">
                     Best Value
                   </span>
-                  <span className="text-[11px] font-bold text-slate-300 font-mono">#F02</span>
+                  <span className="text-[11px] font-bold text-slate-500 font-mono">#F02</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Multibagger Combo</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
@@ -223,14 +216,14 @@ export default function Offers({ setCurrentPage }) {
             {/* Card 3: Early Bird Bonus */}
             <div 
               style={{ padding: '40px 32px', minHeight: '400px', borderRadius: '24px' }}
-              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-350 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
+              className="bg-white border border-slate-200 flex flex-col justify-between hover:shadow-lg hover:border-slate-300 transition duration-300 text-left shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
                 <div className="flex justify-between items-center mb-5">
                   <span className="text-[9px] font-extrabold bg-slate-50 border border-slate-100 text-slate-600 px-3 py-1 rounded-md uppercase tracking-wider">
                     New Users
                   </span>
-                  <span className="text-[11px] font-bold text-slate-300 font-mono">#F03</span>
+                  <span className="text-[11px] font-bold text-slate-500 font-mono">#F03</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Early Bird Bonus</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-6">
@@ -373,7 +366,7 @@ export default function Offers({ setCurrentPage }) {
             <h3 className="text-2xl font-black text-white">
               Refer & <span className="text-[#dafd44]">Earn</span>
             </h3>
-            <p className="text-xs text-slate-350 leading-relaxed font-bold">
+            <p className="text-xs text-slate-300 leading-relaxed font-bold">
               Refer a fellow investor and get <span className="text-[#dafd44]">1 Month Free</span> for every successful referral.
             </p>
           </div>

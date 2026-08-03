@@ -199,7 +199,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <div>
-                    <span className="text-[9px] text-gray-600 uppercase tracking-widest block font-bold leading-none mb-1">CALL US</span>
+                    <span className="text-[9px] text-gray-400 uppercase tracking-widest block font-bold leading-none mb-1">CALL US</span>
                     <a href="tel:+918109081040" className="text-base font-extrabold text-white hover:text-[#dafd44] transition">
                       +91 81090 81040
                     </a>
@@ -213,7 +213,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <div className="min-w-0">
-                    <span className="text-[9px] text-gray-600 uppercase tracking-widest block font-bold leading-none mb-1">EMAIL US</span>
+                    <span className="text-[9px] text-gray-400 uppercase tracking-widest block font-bold leading-none mb-1">EMAIL US</span>
                     <a href="mailto:rajivylrsharma89@gmail.com" className="text-sm font-extrabold text-white hover:text-[#dafd44] transition truncate block">
                       rajivylrsharma89@gmail.com
                     </a>
@@ -227,7 +227,7 @@ export default function Contact() {
                     </svg>
                   </div>
                   <div>
-                    <span className="text-[9px] text-gray-600 uppercase tracking-widest block font-bold leading-none mb-1">SEBI REGISTRATION</span>
+                    <span className="text-[9px] text-gray-400 uppercase tracking-widest block font-bold leading-none mb-1">SEBI REGISTRATION</span>
                     <span className="text-sm font-extrabold text-white">
                       INH000022163
                     </span>

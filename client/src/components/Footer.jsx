@@ -36,8 +36,8 @@ export default function Footer() {
               <div className="pt-2 space-y-1.5">
                 <p><span className="text-gray-400">SEBI Reg No:</span> <span className="text-white font-medium">INH000022163</span></p>
                 <p><span className="text-gray-400">Type:</span> <span className="text-white">Research Analyst</span></p>
-                <p><span className="text-gray-400">Email:</span> <a href="mailto:rajivylrsharma89@gmail.com" className="text-[#15803d] hover:underline">rajivylrsharma89@gmail.com</a></p>
-                <p><span className="text-gray-400">Phone:</span> <a href="tel:+918109081040" className="text-white hover:text-[#15803d] font-medium">+91 81090 81040</a></p>
+                <p><span className="text-gray-400">Email:</span> <a href="mailto:rajivylrsharma89@gmail.com" className="text-[#25a544] hover:underline">rajivylrsharma89@gmail.com</a></p>
+                <p><span className="text-gray-400">Phone:</span> <a href="tel:+918109081040" className="text-white hover:text-[#25a544] font-medium">+91 81090 81040</a></p>
               </div>
             </div>
 

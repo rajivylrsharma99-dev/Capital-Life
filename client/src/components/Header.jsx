@@ -88,7 +88,7 @@ export default function Header({ currentPage, setCurrentPage }) {
               type="button"
               onClick={() => { setCurrentPage('home'); setIsOpen(false); }}
               className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
-                currentPage === 'home' ? 'text-[#15803d] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#15803d]'
+                currentPage === 'home' ? 'text-[#15803d] bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-[#15803d]'
               }`}
             >
               Home
@@ -97,7 +97,7 @@ export default function Header({ currentPage, setCurrentPage }) {
               type="button"
               onClick={() => { setCurrentPage('pricing'); setIsOpen(false); }}
               className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
-                currentPage === 'pricing' ? 'text-[#15803d] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#15803d]'
+                currentPage === 'pricing' ? 'text-[#15803d] bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-[#15803d]'
               }`}
             >
               Plans & Pricing
@@ -106,7 +106,7 @@ export default function Header({ currentPage, setCurrentPage }) {
               type="button"
               onClick={() => { setCurrentPage('contact'); setIsOpen(false); }}
               className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
-                currentPage === 'contact' ? 'text-[#15803d] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#15803d]'
+                currentPage === 'contact' ? 'text-[#15803d] bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-[#15803d]'
               }`}
             >
               Contact Us
@@ -115,7 +115,7 @@ export default function Header({ currentPage, setCurrentPage }) {
               type="button"
               onClick={() => { setCurrentPage('offers'); setIsOpen(false); }}
               className={`w-full text-left block px-3 py-2 rounded-md text-base font-medium focus:outline-none cursor-pointer ${
-                currentPage === 'offers' ? 'text-[#15803d] bg-gray-50' : 'text-gray-655 hover:bg-gray-50 hover:text-[#15803d]'
+                currentPage === 'offers' ? 'text-[#15803d] bg-gray-50' : 'text-gray-600 hover:bg-gray-50 hover:text-[#15803d]'
               }`}
             >
               Offers
