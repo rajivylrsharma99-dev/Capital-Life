@@ -309,7 +309,7 @@ app.post('/api/support', async (req, res) => {
     try {
       await resend.emails.send({
         from: 'Capital Life Support <onboarding@resend.dev>',
-        to: ['rajivylrsharma89@gmail.com'],
+        to: ['rajivylrsharma99@gmail.com'],
         subject: `New ${type === 'callback' ? 'Callback' : 'Support'}: ${subject || (type === 'callback' ? 'Callback Request' : 'General Inquiry')}`,
         html: `
           <h3>New Support Inquiry Received</h3>

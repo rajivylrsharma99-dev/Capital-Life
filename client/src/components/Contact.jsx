@@ -216,8 +216,8 @@ export default function Contact() {
                   </div>
                   <div className="min-w-0">
                     <span className="text-[9px] text-gray-400 uppercase tracking-widest block font-bold leading-none mb-1">EMAIL US</span>
-                    <a href="mailto:rajivylrsharma89@gmail.com" className="text-sm font-extrabold text-white hover:text-[#dafd44] transition truncate block">
-                      rajivylrsharma89@gmail.com
+                    <a href="mailto:rajivylrsharma99@gmail.com" className="text-sm font-extrabold text-white hover:text-[#dafd44] transition truncate block">
+                      rajivylrsharma99@gmail.com
                     </a>
                   </div>
                 </div>
