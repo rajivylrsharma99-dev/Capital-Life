@@ -22,8 +22,10 @@ export default function Contact() {
         if (token) {
           headers['Authorization'] = `Bearer ${token}`;
         }
-        
-        const res = await fetch('http://127.0.0.1:5000/api/support', {
+        const apiBaseUrl = import.meta.env.VITE_API_URL !== undefined 
+          ? import.meta.env.VITE_API_URL 
+          : (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '');
+        const res = await fetch(`${apiBaseUrl}/api/support`, {
           method: 'POST',
           headers,
           body: JSON.stringify({

@@ -8,6 +8,7 @@
     "install-all": "npm install --prefix client && npm install --prefix server"
   },
   "dependencies": {
-    "@browserstack/accessibility-devtools": "^1.5.1"
+    "@browserstack/accessibility-devtools": "^1.5.1",
+    "resend": "^6.18.1"
   }
 }

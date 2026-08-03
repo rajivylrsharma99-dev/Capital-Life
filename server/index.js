@@ -6,6 +6,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const multer = require('multer');
 require('dotenv').config();
+const { Resend } = require('resend');
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Load models
 const User = require('./models/User');
@@ -301,6 +304,29 @@ app.post('/api/support', async (req, res) => {
       type: type || 'support'
     });
     await ticket.save();
+
+    // Send email notification to admin via Resend
+    try {
+      await resend.emails.send({
+        from: 'Capital Life Support <onboarding@resend.dev>',
+        to: ['rajivylrsharma89@gmail.com'],
+        subject: `New ${type === 'callback' ? 'Callback' : 'Support'}: ${subject || (type === 'callback' ? 'Callback Request' : 'General Inquiry')}`,
+        html: `
+          <h3>New Support Inquiry Received</h3>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone}</p>
+          <p><strong>Type:</strong> ${type || 'support'}</p>
+          <p><strong>Subject:</strong> ${subject || (type === 'callback' ? 'Callback Request' : 'General Inquiry')}</p>
+          <p><strong>Message:</strong></p>
+          <p>${message || (type === 'callback' ? `Callback requested on phone: ${phone}` : 'No message provided.')}</p>
+        `
+      });
+      console.log('Email sent successfully via Resend');
+    } catch (emailErr) {
+      console.error('Error sending email via Resend:', emailErr);
+    }
+
     res.json({ message: 'Inquiry/ticket registered successfully', ticket });
   } catch (err) {
     console.error('Save ticket error:', err);
