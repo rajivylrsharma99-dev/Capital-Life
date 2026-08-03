@@ -17,6 +17,18 @@ export default function Offers({ setCurrentPage }) {
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsModalOpen(false);
+      }
+    };
+    if (isModalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
+
   const formatTime = (seconds) => {
     const hrs = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
@@ -142,7 +154,7 @@ export default function Offers({ setCurrentPage }) {
         <div id="deals">
           <div className="text-center space-y-1.5 mb-10">
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">Flash Deals</h2>
-            <p className="text-xs text-slate-400">Time-sensitive offers for rapid portfolio scaling</p>
+            <p className="text-xs text-slate-600">Time-sensitive offers for rapid portfolio scaling</p>
             <div className="w-12 h-1 bg-[#25a544] mx-auto rounded-full mt-2"></div>
           </div>
 
@@ -161,7 +173,7 @@ export default function Offers({ setCurrentPage }) {
                   <span className="text-[11px] font-bold text-slate-300 font-mono">#F01</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Alpha Portfolio Special</h3>
-                <p className="text-xs text-slate-455 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-6">
                   Aggressive growth strategies for high-impact portfolios.
                 </p>
                 <div className="my-6">
@@ -191,7 +203,7 @@ export default function Offers({ setCurrentPage }) {
                   <span className="text-[11px] font-bold text-slate-300 font-mono">#F02</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Multibagger Combo</h3>
-                <p className="text-xs text-slate-455 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-6">
                   Buy annual membership and get 3 months extra free.
                 </p>
                 <div className="my-6">
@@ -215,13 +227,13 @@ export default function Offers({ setCurrentPage }) {
             >
               <div>
                 <div className="flex justify-between items-center mb-5">
-                  <span className="text-[9px] font-extrabold bg-slate-50 border border-slate-100 text-slate-500 px-3 py-1 rounded-md uppercase tracking-wider">
+                  <span className="text-[9px] font-extrabold bg-slate-50 border border-slate-100 text-slate-600 px-3 py-1 rounded-md uppercase tracking-wider">
                     New Users
                   </span>
                   <span className="text-[11px] font-bold text-slate-300 font-mono">#F03</span>
                 </div>
                 <h3 className="text-lg font-black text-slate-900 mb-2">Early Bird Bonus</h3>
-                <p className="text-xs text-slate-455 leading-relaxed mb-6">
+                <p className="text-xs text-slate-600 leading-relaxed mb-6">
                   Additional welcome discount for new platform members.
                 </p>
                 <div className="my-6">
@@ -245,9 +257,9 @@ export default function Offers({ setCurrentPage }) {
         <div id="bundles">
           <div className="text-center space-y-1.5 mb-10">
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">
-              Smart Investor <span className="text-[#25a544]">Bundles</span>
+              Smart Investor <span className="text-[#15803d]">Bundles</span>
             </h2>
-            <p className="text-xs text-slate-400">Consolidated packages optimized for diverse investment goals.</p>
+            <p className="text-xs text-slate-600">Consolidated packages optimized for diverse investment goals.</p>
             <div className="w-12 h-1 bg-[#25a544] mx-auto rounded-full mt-2"></div>
           </div>
 
@@ -259,9 +271,9 @@ export default function Offers({ setCurrentPage }) {
               className="bg-white border border-slate-200 rounded-3xl flex flex-col justify-between text-left hover:shadow-md hover:border-slate-300 transition shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
-                <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-3">ULTIMATE POWER PACK</span>
+                <span className="text-[9px] font-extrabold text-slate-600 uppercase tracking-widest block mb-3">ULTIMATE POWER PACK</span>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">The Wealth Architect</h3>
-                <p className="text-xs text-slate-450 leading-relaxed">
+                <p className="text-xs text-slate-600 leading-relaxed">
                   Premium Advisory, Algo-Signals, and Personalized Reviews for HNIs.
                 </p>
               </div>
@@ -270,7 +282,7 @@ export default function Offers({ setCurrentPage }) {
                 <button
                   onClick={() => openClaimModal('The Wealth Architect Bundle')}
                   aria-label="Activate The Wealth Architect Bundle"
-                  className="text-xs font-bold text-[#25a544] hover:text-[#208a38] transition cursor-pointer"
+                  className="text-xs font-bold text-[#15803d] hover:text-[#208a38] transition cursor-pointer"
                 >
                   Activate
                 </button>
@@ -283,9 +295,9 @@ export default function Offers({ setCurrentPage }) {
               className="bg-white border border-slate-200 rounded-3xl flex flex-col justify-between text-left hover:shadow-md hover:border-slate-300 transition shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
-                <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-3">ACTIVE TRADING</span>
+                <span className="text-[9px] font-extrabold text-slate-600 uppercase tracking-widest block mb-3">ACTIVE TRADING</span>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Trader's Choice</h3>
-                <p className="text-xs text-slate-450 leading-relaxed">
+                <p className="text-xs text-slate-600 leading-relaxed">
                   F&O Strategies combined with high-frequency intraday calls.
                 </p>
               </div>
@@ -294,7 +306,7 @@ export default function Offers({ setCurrentPage }) {
                 <button
                   onClick={() => openClaimModal('Trader\'s Choice Bundle')}
                   aria-label="View details of Trader's Choice Bundle"
-                  className="text-xs font-bold text-[#25a544] hover:text-green-700 transition cursor-pointer"
+                  className="text-xs font-bold text-[#15803d] hover:text-green-700 transition cursor-pointer"
                 >
                   Details
                 </button>
@@ -307,9 +319,9 @@ export default function Offers({ setCurrentPage }) {
               className="bg-white border border-slate-200 rounded-3xl flex flex-col justify-between text-left hover:shadow-md hover:border-slate-300 transition shadow-[0_8px_30px_rgb(0,0,0,0.02)]"
             >
               <div>
-                <span className="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest block mb-3">STABILITY FOCUS</span>
+                <span className="text-[9px] font-extrabold text-slate-600 uppercase tracking-widest block mb-3">STABILITY FOCUS</span>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Passive Growth</h3>
-                <p className="text-xs text-slate-455 leading-relaxed">
+                <p className="text-xs text-slate-600 leading-relaxed">
                   Mutual Fund Analysis and curated Long-Term stock picks.
                 </p>
               </div>
@@ -318,7 +330,7 @@ export default function Offers({ setCurrentPage }) {
                 <button
                   onClick={() => openClaimModal('Passive Growth Bundle')}
                   aria-label="View details of Passive Growth Bundle"
-                  className="text-xs font-bold text-[#25a544] hover:text-green-700 transition cursor-pointer"
+                  className="text-xs font-bold text-[#15803d] hover:text-green-700 transition cursor-pointer"
                 >
                   Details
                 </button>
@@ -387,13 +399,19 @@ export default function Offers({ setCurrentPage }) {
       {/* 7. Interactive Claim Modal Popup */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full relative border border-slate-100 shadow-2xl text-left animate-in fade-in zoom-in duration-200">
+          <div 
+            role="dialog" 
+            aria-modal="true" 
+            aria-label="Secure Promotion Offer"
+            aria-labelledby={submitted ? "submitted-modal-title" : "form-modal-title"} 
+            className="bg-white rounded-3xl p-8 max-w-md w-full relative border border-slate-100 shadow-2xl text-left animate-in fade-in zoom-in duration-200"
+          >
             <button 
               onClick={() => setIsModalOpen(false)}
               aria-label="Close modal"
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-650 transition focus:outline-none cursor-pointer"
+              className="absolute top-4 right-4 text-slate-600 hover:text-slate-655 transition focus:outline-none cursor-pointer"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg aria-hidden="true" className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -401,36 +419,36 @@ export default function Offers({ setCurrentPage }) {
             {submitted ? (
               <div className="py-6 text-center space-y-4">
                 <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center mx-auto shadow-sm">
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg aria-hidden="true" className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h4 className="text-xl font-black text-slate-900">Request Registered!</h4>
-                <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto text-center mb-4">
+                <h4 id="submitted-modal-title" className="text-xl font-black text-slate-900">Request Registered!</h4>
+                <p className="text-xs text-slate-600 leading-relaxed max-w-xs mx-auto text-center mb-4">
                   Thank you. Your request for the <strong className="text-slate-800">{selectedOfferName}</strong> has been secured. An analyst will contact you within 15 minutes.
                 </p>
                 <button
                   onClick={() => {
                     setIsModalOpen(false);
-                    setCurrentPage('payment');
+                    setCurrentPage('contact');
                   }}
                   style={{ backgroundColor: '#25a544', color: '#ffffff' }}
                   className="w-full py-3.5 hover:bg-emerald-700 text-xs font-black uppercase tracking-wider rounded-xl transition cursor-pointer shadow-md"
                 >
-                  Proceed to Secure Payment
+                  Go to Contact Us
                 </button>
               </div>
             ) : (
               <form onSubmit={handleFormSubmit} className="space-y-4">
                 <div>
-                  <span className="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block mb-1">Confirm Selected Promotion</span>
-                  <h3 className="text-lg font-black text-slate-900 leading-tight">{selectedOfferName}</h3>
+                  <span className="text-[10px] font-extrabold text-slate-600 uppercase tracking-wider block mb-1">Confirm Selected Promotion</span>
+                  <h3 id="form-modal-title" className="text-lg font-black text-slate-900 leading-tight">{selectedOfferName}</h3>
                 </div>
                 <div className="h-px bg-slate-100 my-4"></div>
 
                 <div className="space-y-3.5">
                   <div>
-                    <label htmlFor="offersCapital" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Capital Range</label>
+                    <label htmlFor="offersCapital" className="block text-[10px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Capital Range</label>
                     <select 
                       id="offersCapital"
                       value={formData.capital} 
@@ -445,7 +463,7 @@ export default function Offers({ setCurrentPage }) {
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="offersFullName" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Your Full Name</label>
+                    <label htmlFor="offersFullName" className="block text-[10px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Your Full Name</label>
                     <input 
                       id="offersFullName"
                       type="text" 
@@ -458,7 +476,7 @@ export default function Offers({ setCurrentPage }) {
                     />
                   </div>
                   <div>
-                    <label htmlFor="offersEmail" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <label htmlFor="offersEmail" className="block text-[10px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Email Address</label>
                     <input 
                       id="offersEmail"
                       type="email" 
@@ -471,7 +489,7 @@ export default function Offers({ setCurrentPage }) {
                     />
                   </div>
                   <div>
-                    <label htmlFor="offersPhone" className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1.5">Phone Number</label>
+                    <label htmlFor="offersPhone" className="block text-[10px] font-extrabold text-slate-600 uppercase tracking-wider mb-1.5">Phone Number</label>
                     <input 
                       id="offersPhone"
                       type="tel" 
@@ -491,7 +509,7 @@ export default function Offers({ setCurrentPage }) {
                 >
                   Confirm & Secure Activation
                 </button>
-                <p className="text-[10px] text-slate-400 text-center mt-2">
+                <p className="text-[10px] text-slate-600 text-center mt-2">
                   🔒 Data secured. Certified SEBI Registered Analyst Team.
                 </p>
               </form>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function CTA({ setCurrentPage, user }) {
+export default function CTA({ setCurrentPage }) {
   return (
     <section className="bg-[#1f232c] text-white py-20 text-center relative overflow-hidden">
       
@@ -26,11 +26,11 @@ export default function CTA({ setCurrentPage, user }) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button
             type="button"
-            aria-label={user ? 'Dashboard' : 'Get Started'}
-            onClick={() => setCurrentPage(user ? 'dashboard' : 'login')}
+            aria-label="View Investment Plans"
+            onClick={() => setCurrentPage('pricing')}
             className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 border border-transparent rounded-xl text-base font-bold text-gray-900 bg-[#dafd44] hover:bg-[#cee551] shadow-lg transform hover:-translate-y-0.5 transition duration-150 cursor-pointer"
           >
-            {user ? 'Dashboard' : 'Get Started'}
+            View Plans
           </button>
           <button
             type="button"

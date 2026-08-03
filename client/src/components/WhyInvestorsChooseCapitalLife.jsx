@@ -18,16 +18,16 @@ export default function WhyInvestorsChooseCapitalLife({ setCurrentPage }) {
           
           {/* Left Column: Heading and Subheading */}
           <div className="lg:col-span-5 flex flex-col space-y-6">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider block">
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider block">
               OUR INVESTING PHILOSOPHY
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight">
               Why Investors Choose Capital Life
             </h2>
-            <p className="text-lg font-bold text-[#25a544]">
+            <p className="text-lg font-bold text-[#15803d]">
               Investing Should Be Based on Knowledge, Not Emotions.
             </p>
-            <p className="text-sm text-gray-500 leading-relaxed">
+            <p className="text-sm text-gray-600 leading-relaxed">
               We believe every investment decision should be backed by research, discipline, and proper risk management. That's why our research process focuses on:
             </p>
             <div className="pt-2">
@@ -49,14 +49,14 @@ export default function WhyInvestorsChooseCapitalLife({ setCurrentPage }) {
                 className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-start space-x-4 hover:shadow-md transition duration-300"
               >
                 {/* Check Icon */}
-                <div className="w-8 h-8 rounded-full bg-green-50 flex-shrink-0 flex items-center justify-center text-[#25a544]">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 rounded-full bg-green-50 flex-shrink-0 flex items-center justify-center text-[#15803d]">
+                  <svg aria-hidden="true" className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-900 mb-1" aria-label={area.title}>{area.title}</h3>
-                  <p className="text-[11px] text-gray-400 leading-relaxed">{area.desc}</p>
+                  <h3 className="text-sm font-bold text-gray-900 mb-1">{area.title}</h3>
+                  <p className="text-[11px] text-gray-600 leading-relaxed">{area.desc}</p>
                 </div>
               </div>
             ))}

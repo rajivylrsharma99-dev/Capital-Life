@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function Partners() {
+export default function Partners({ setCurrentPage }) {
   const partners = [
     { name: 'moneycontrol', label: 'moneycontrol' },
     { name: 'economic_times', label: 'The Economic Times' },
@@ -22,12 +22,16 @@ export default function Partners() {
             </div>
           ))}
           {/* Support advisor badge */}
-          <div className="bg-gray-900 text-white text-xs font-semibold py-2 px-4 rounded-full flex items-center gap-2 cursor-pointer shadow-md hover:bg-gray-800 transition">
-            <svg className="w-4 w-4 text-[#dafd44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button
+            type="button"
+            onClick={() => setCurrentPage('contact')}
+            className="bg-gray-900 text-white text-xs font-semibold py-2 px-4 rounded-full flex items-center gap-2 cursor-pointer shadow-md hover:bg-gray-800 transition focus:outline-none focus:ring-2 focus:ring-green-500"
+          >
+            <svg aria-hidden="true" className="w-4 h-4 text-[#dafd44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 00.9-.045L9.61 7.21a1.2 1.2 0 00-1.42 0l-1.17 1.17a9.045 9.045 0 003.44 3.44l1.17-1.17a1.2 1.2 0 000-1.42l-.548-.548a1 1 0 00-.045-.9l2.2-.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
             <span>TALK TO AN ADVISOR</span>
-          </div>
+          </button>
         </div>
       </div>
     </section>

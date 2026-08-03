@@ -35,7 +35,7 @@ export default function ResearchProcess() {
         
         {/* Title */}
         <div className="text-center mb-16">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
+          <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 block">
             HOW WE WORK
           </span>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
@@ -66,14 +66,14 @@ export default function ResearchProcess() {
                     {step.title}
                   </h3>
                 )}
-                <p className="text-xs text-gray-500 leading-relaxed max-w-xs lg:max-w-none">
+                <p className="text-xs text-gray-600 leading-relaxed max-w-xs lg:max-w-none">
                   {step.text}
                 </p>
 
                 {/* Arrow Connector (Mobile/Tablet Only, between items) */}
                 {index < steps.length - 1 && (
-                  <div className="lg:hidden my-4 text-[#25a544]">
-                    <svg className="w-6 h-6 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="lg:hidden my-4 text-[#15803d]">
+                    <svg aria-hidden="true" className="w-6 h-6 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </div>

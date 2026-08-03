@@ -1,7 +1,7 @@
 import React from 'react';
 import heroPhones from '../assets/hero-phones.png';
 
-export default function Hero({ setCurrentPage, user }) {
+export default function Hero({ setCurrentPage }) {
   return (
     <section className="relative overflow-hidden bg-transparent pt-12 pb-24 md:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -21,8 +21,8 @@ export default function Hero({ setCurrentPage, user }) {
             {/* Title */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
               Build Wealth Through<br />
-              <span className="text-[#25a544]">Research</span>, Not<br />
-              <span className="text-[#25a544]">Speculation.</span>
+              <span className="text-[#15803d]">Research</span>, Not<br />
+              <span className="text-[#15803d]">Speculation.</span>
             </h1>
 
             {/* Subtitle / Subheading */}
@@ -39,11 +39,11 @@ export default function Hero({ setCurrentPage, user }) {
             <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
               <button
                 type="button"
-                onClick={() => setCurrentPage(user ? 'dashboard' : 'login')}
-                aria-label={user ? 'Dashboard' : 'Get Started'}
+                onClick={() => setCurrentPage('pricing')}
+                aria-label="View Investment Plans"
                 className="inline-flex items-center justify-center px-6 py-4 border border-transparent text-sm font-bold rounded-xl text-white bg-gray-900 hover:bg-gray-800 shadow-md transition duration-150 text-center cursor-pointer"
               >
-                {user ? 'Dashboard' : 'Get Started'}
+                View Plans
               </button>
               <button
                 type="button"

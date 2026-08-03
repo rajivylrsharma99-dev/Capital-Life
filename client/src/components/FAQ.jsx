@@ -32,7 +32,7 @@ export default function FAQ() {
         
         {/* Section Heading */}
         <div className="text-center mb-16">
-          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
+          <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 block">
             HAVE QUESTIONS?
           </span>
           <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
@@ -53,13 +53,13 @@ export default function FAQ() {
                 {/* Accordion Trigger Button */}
                 <button
                   onClick={() => toggleFAQ(index)}
-                  aria-label={faq.question}
                   aria-expanded={isOpen}
+                  aria-controls={`faq-content-${index}`}
                   className="w-full px-6 py-5 flex items-center justify-between text-left font-bold text-gray-800 hover:bg-gray-50 transition focus:outline-none"
                 >
                   <span className="text-sm sm:text-base">{faq.question}</span>
-                  <span className={`ml-4 text-gray-400 transform transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#25a544]' : 'rotate-0'}`}>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <span className={`ml-4 text-gray-600 transform transition-transform duration-200 ${isOpen ? 'rotate-180 text-[#15803d]' : 'rotate-0'}`}>
+                    <svg aria-hidden="true" className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
                   </span>
@@ -67,11 +67,13 @@ export default function FAQ() {
 
                 {/* Accordion Content Panels */}
                 <div
+                  id={`faq-content-${index}`}
+                  aria-hidden={!isOpen}
                   className={`transition-all duration-300 overflow-hidden ${
                     isOpen ? 'max-h-40 border-t border-gray-100' : 'max-h-0'
                   }`}
                 >
-                  <div className="p-6 text-xs sm:text-sm text-gray-500 leading-relaxed bg-white">
+                  <div className="p-6 text-xs sm:text-sm text-gray-600 leading-relaxed bg-white">
                     {faq.answer}
                   </div>
                 </div>

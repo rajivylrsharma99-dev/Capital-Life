@@ -43,13 +43,13 @@ export default function WhyChooseUs() {
         {/* Section Header */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
           <div className="lg:col-span-5">
-            <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">
+            <span className="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-2 block">
               OUR CORE PHILOSOPHY
             </span>
             <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">
               Why Capital Life Research
             </h2>
-            <p className="text-lg font-bold text-[#25a544] mt-2">
+            <p className="text-lg font-bold text-[#15803d] mt-2">
               Research That Puts Your Interests First
             </p>
             <div className="mt-4 w-20 h-1 bg-[#25a544] rounded-full"></div>
@@ -78,14 +78,14 @@ export default function WhyChooseUs() {
                   </div>
                   <div className="sm:w-1/2 p-6 flex flex-col justify-center">
                     <h3 className="text-base font-bold text-gray-800 mb-2">{card.title}</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">{card.text}</p>
+                    <p className="text-xs text-gray-600 leading-relaxed">{card.text}</p>
                   </div>
                 </>
               ) : (
                 <>
                   <div className="sm:w-1/2 p-6 flex flex-col justify-center order-2 sm:order-1">
                     <h3 className="text-base font-bold text-gray-800 mb-2">{card.title}</h3>
-                    <p className="text-xs text-gray-500 leading-relaxed">{card.text}</p>
+                    <p className="text-xs text-gray-600 leading-relaxed">{card.text}</p>
                   </div>
                   <div className="sm:w-1/2 h-48 sm:h-auto overflow-hidden order-1 sm:order-2">
                     <img src={card.image} alt={card.alt} className="w-full h-full object-cover" />
