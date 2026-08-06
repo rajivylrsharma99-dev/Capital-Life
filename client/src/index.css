@@ -14,3 +14,30 @@ body {
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif !important;
 }
+
+/* Market ticker: the track holds two identical copies of the quote list, so
+   scrolling exactly one copy's width (50%) loops with no visible seam. */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  animation: ticker-scroll 45s linear infinite;
+}
+
+/* Hold the prices still while the visitor is reading them. Both rules must live
+   here rather than as a Tailwind `hover:` utility — these are unlayered, and
+   unlayered CSS outranks Tailwind v4's @layer utilities regardless of
+   specificity, so a utility could never override the shorthand above.
+   Hovering anywhere on the bar pauses it, not just the moving text. */
+.ticker-bar:hover .ticker-track,
+.ticker-bar:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}

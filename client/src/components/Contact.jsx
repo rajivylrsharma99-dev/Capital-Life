@@ -231,7 +231,7 @@ export default function Contact() {
                   <div>
                     <span className="text-[9px] text-gray-400 uppercase tracking-widest block font-bold leading-none mb-1">SEBI REGISTRATION</span>
                     <span className="text-sm font-extrabold text-white">
-                      INH000022163
+                      INA000001365
                     </span>
                   </div>
                 </div>
@@ -248,10 +248,11 @@ export default function Contact() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
-                  Registered Office
+                  Office Address
                 </h3>
                 <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-6 font-semibold">
-                  Office No 103, 1st Floor, Aditya Apartment, Shree Nagar Main, Above G3 Royal, Indore, Madhya Pradesh - 452010
+                  Capital Life Market Research<br />
+                  Plot no .26, Sche. No .54, PU-4, Behind C-21 Mall, In front NRK Bizzpark, Vijay Nagar, Indore
                 </p>
               </div>
 

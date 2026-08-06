@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpg';
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
           
           {/* Column 1: Brand & Compliance */}
           <div className="lg:col-span-4 flex flex-col space-y-5">
-            <img src={logo} alt="Capital Life Logo" className="h-10 w-auto object-contain bg-white p-1.5 rounded-lg self-start" />
+            <img src={logo} alt="Capital Life Logo" className="h-15 w-auto object-contain bg-white p-1.5 rounded-lg self-start" />
             <p className="text-xs text-gray-400 leading-relaxed max-w-sm">
               Capital Life Research is a premier financial research firm dedicated to delivering disciplined technical and market analysis for retail and institutional investors.
             </p>
@@ -34,8 +34,8 @@ export default function Footer() {
               <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">Proprietor Capital Life Research</p>
               
               <div className="pt-2 space-y-1.5">
-                <p><span className="text-gray-400">SEBI Reg No:</span> <span className="text-white font-medium">INH000022163</span></p>
-                <p><span className="text-gray-400">Type:</span> <span className="text-white">Research Analyst</span></p>
+                <p><span className="text-gray-400">SEBI Reg No:</span> <span className="text-white font-medium">INA000001365</span></p>
+                <p><span className="text-gray-400">Type:</span> <span className="text-white">Investment Advisor</span></p>
                 <p><span className="text-gray-400">Email:</span> <a href="mailto:rajivylrsharma99@gmail.com" className="text-[#25a544] hover:underline">rajivylrsharma99@gmail.com</a></p>
                 <p><span className="text-gray-400">Phone:</span> <a href="tel:+918109081040" className="text-white hover:text-[#25a544] font-medium">+91 81090 81040</a></p>
               </div>
@@ -96,9 +96,10 @@ export default function Footer() {
               </div>
 
               <div>
-                <span className="text-gray-400 font-bold block mb-1">Correspondence & Previous Address:</span>
+                <span className="text-gray-400 font-bold block mb-1">Office Address:</span>
+                <p className="text-gray-300 font-semibold text-white">Capital Life Market Research</p>
                 <p className="text-gray-300">
-                  Office No 103, 1st Floor, Aditya Apartment, Shree Nagar Main, Above G3 Royal, Indore, Madhya Pradesh - 452010
+                  Plot no .26, Sche. No .54, PU-4, Behind C-21 Mall, In front NRK Bizzpark, Vijay Nagar, Indore
                 </p>
               </div>
             </div>
@@ -112,7 +113,7 @@ export default function Footer() {
             © 2026 Capital Life Financial Services. All Rights Reserved.
           </div>
           <div>
-            SEBI Registered Research Analyst Registration No: INH000022163
+            SEBI Registered Investment Advisor Registration No: INA000001365
           </div>
         </div>
 

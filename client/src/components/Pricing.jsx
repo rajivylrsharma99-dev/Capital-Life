@@ -554,7 +554,7 @@ export default function Pricing() {
                 <div>
                   <span className="text-[10px] text-gray-600 uppercase tracking-widest block font-bold leading-none mb-1">SEBI REGISTRATION</span>
                   <span className="text-sm font-extrabold text-gray-800">
-                    Registration No: INH000022163
+                    Registration No: INA000001365
                   </span>
                 </div>
               </div>

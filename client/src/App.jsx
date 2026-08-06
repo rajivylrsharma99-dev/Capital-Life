@@ -15,6 +15,7 @@ import Footer from './components/Footer';
 import Pricing from './components/Pricing';
 import Contact from './components/Contact';
 import Offers from './components/Offers';
+import TickerTape from './components/TickerTape';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-sans antialiased text-gray-700 selection:bg-green-150">
+      <TickerTape />
       <div className="bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-[#e3ff54] via-[#f8ffdf] to-white to-80%">
         <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
         {currentPage === 'home' && <Hero setCurrentPage={setCurrentPage} />}

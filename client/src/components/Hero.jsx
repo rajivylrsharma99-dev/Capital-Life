@@ -15,7 +15,7 @@ export default function Hero({ setCurrentPage }) {
               <svg className="h-2.5 w-2.5 text-green-600 fill-current animate-pulse" viewBox="0 0 8 8">
                 <circle cx="4" cy="4" r="3" />
               </svg>
-              <span>SEBI Registered Research Analyst | INH000022163</span>
+              <span>SEBI Registered Investment Advisor | INA000001365</span>
             </div>
 
             {/* Title */}

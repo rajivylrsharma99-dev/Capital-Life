@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo.jpg';
 
 export default function Header({ currentPage, setCurrentPage }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,7 +14,7 @@ export default function Header({ currentPage, setCurrentPage }) {
             className="flex-shrink-0 flex items-center cursor-pointer select-none focus:outline-none"
             onClick={() => setCurrentPage('home')}
           >
-            <img src={logo} alt="Capital Life Logo" className="h-11 w-auto object-contain" />
+            <img src={logo} alt="Capital Life Logo" className="h-16 w-auto object-contain" />
           </button>
 
           {/* Desktop Nav Links */}
